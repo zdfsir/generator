@@ -22,7 +22,7 @@ import java.util.Map;
  * @since 2018/4/20
  */
 @Slf4j
-public class EntityVOTask extends AbstractTask {
+public class EntityRequestTask extends AbstractTask {
     /**
      * 业务表元数据
      */
@@ -32,9 +32,9 @@ public class EntityVOTask extends AbstractTask {
      */
     private Mode mode;
 
-    private static DataReaderUtil dataReaderUtil = Singleton.get(DataReaderUtil.class, "EntityVOTask");
+    private static DataReaderUtil dataReaderUtil = Singleton.get(DataReaderUtil.class, "EntityRequestTask");
 
-    public EntityVOTask(Mode mode, AbstractInvoker invoker) {
+    public EntityRequestTask(Mode mode, AbstractInvoker invoker) {
         this.mode = mode;
         this.invoker = invoker;
         if (Mode.ENTITY_MAIN.equals(mode)) {
@@ -55,10 +55,13 @@ public class EntityVOTask extends AbstractTask {
         if (log.isDebugEnabled()) {
 //            log.debug(">>> {} 元数据 [{}]" , this.getClass().getName(), JSON.toJSONString(data, true));
         }
-        // 生成Entity文件
-        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_VO, data,
-                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntityVO())),
-                String.format("%sVO.java", fileName));
+        // 生成文件
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_SEARCH, data,
+                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntitySearchDTO())),
+                String.format("%sSearchDTO.java", fileName));
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_REQUEST_DTO, data,
+                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntityRequestDTO())),
+                String.format("%sRequestDTO.java", fileName));
     }
 
     /**
@@ -71,7 +74,8 @@ public class EntityVOTask extends AbstractTask {
         StringBuilder sb = new StringBuilder();
         tableInfos.forEach(ForEachUtil.withIndex((info, index) -> {
             if (info.getColumnName().equals(invoker.getForeignKey())
-                    || info.isPrimaryKey()) {
+                    || info.isPrimaryKey()
+                    || TIME_JDBC_TYPE_LIST.contains(info.getColumnType())) {
                 sb.append("\n");
                 return;
             }

@@ -31,7 +31,7 @@ name:
 # 代码作者
 author: borong
 # 项目包名
-package-name: com.tsw2.cloudnest.account
+package-name: com.tsw2.cloudnest.system
 # 数据类型转换器
 convertor: com.greedystar.generator.convertor.DefaultConvertor
 swagger-enable: true

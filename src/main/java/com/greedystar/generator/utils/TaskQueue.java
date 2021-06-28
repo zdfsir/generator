@@ -57,6 +57,7 @@ public class TaskQueue {
         if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getEntity())) {
             taskQueue.add(new EntityTask(Mode.ENTITY_MAIN, invoker));
             taskQueue.add(new EntityVOTask(Mode.ENTITY_MAIN, invoker));
+            taskQueue.add(new EntityRequestTask(Mode.ENTITY_MAIN, invoker));
         }
     }
 

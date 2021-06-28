@@ -27,6 +27,8 @@ public class DataReaderUtil {
     public DataReaderUtil() {
     }
 
+    private static final List<JDBCType> TIME_JDBC_TYPE_LIST = Arrays.asList(new JDBCType[]{JDBCType.DATE, JDBCType.TIME, JDBCType.TIMESTAMP});
+
     private String consumer;
 
     public DataReaderUtil(String consumer) {
@@ -103,8 +105,7 @@ public class DataReaderUtil {
             return null;
         }
 
-        List<JDBCType> jdbcTypeList = Arrays.asList(new JDBCType[]{JDBCType.DATE, JDBCType.TIME, JDBCType.TIMESTAMP});
-        List<ColumnInfo> list = tableInfos.parallelStream().filter(o -> jdbcTypeList.contains(o.getColumnType())).collect(Collectors.toList());
+        List<ColumnInfo> list = tableInfos.parallelStream().filter(o -> TIME_JDBC_TYPE_LIST.contains(o.getColumnType())).collect(Collectors.toList());
         return list;
     }
 

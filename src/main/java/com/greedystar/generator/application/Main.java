@@ -22,6 +22,7 @@ public class Main {
 
     public static void single() {
         Map<String, String> invokerMap = new HashMap<>();
+
         invokerMap.put("account", "Account");
         invokerMap.put("account_admin", "AccountAdmin");
         invokerMap.put("account_group", "AccountGroup");
@@ -29,6 +30,9 @@ public class Main {
         invokerMap.put("account_referrer_relation", "AccountReferrerRelation");
         invokerMap.put("account_referrer_relation_history", "AccountReferrerRelationHistory");
         invokerMap.put("account_role_relation", "AccountRoleRelation");
+//        invokerMap.put("system_log", "SystemLog");
+//        invokerMap.put("basic_setting", "Setting");
+//        invokerMap.put("basic_setting_records", "SettingRecords");
 
         invokerMap.forEach(new BiConsumer<String, String>() {
             @Override

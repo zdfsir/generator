@@ -5,6 +5,9 @@ import freemarker.template.TemplateException;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.JDBCType;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author GreedyStar
@@ -12,6 +15,8 @@ import java.io.Serializable;
  */
 public abstract class AbstractTask implements Serializable {
     protected AbstractInvoker invoker;
+
+    protected static final List<JDBCType> TIME_JDBC_TYPE_LIST = Arrays.asList(new JDBCType[]{JDBCType.DATE, JDBCType.TIME, JDBCType.TIMESTAMP});
 
     public AbstractTask() {
     }
