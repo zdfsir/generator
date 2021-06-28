@@ -1,68 +1,48 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${Configuration.packageName}.${Configuration.path.dao}.${DaoClassName}">
+package ${Configuration.packageName}.${Configuration.path.mapper};
 
-    <resultMap id="${EntityName}ResultMap" type="${Configuration.packageName}.${Configuration.path.entity}.${ClassName}">
-        ${ResultMap}
-        ${Association}
-        ${Collection}
-    </resultMap>
+import ${Configuration.packageName}.${Configuration.path.entity}.${ClassName};
+<#if Configuration.mybatisPlusEnable>
+import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+<#elseif Configuration.jpaEnable>
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+<#else>
+import org.apache.ibatis.annotations.Mapper;
+</#if>
 
-    <sql id="${EntityName}Columns">
-        ${ColumnMap}
-    </sql>
+import java.io.Serializable;
+import java.util.List;
 
-    <sql id="${EntityName}Joins">
-        ${Joins}
-    </sql>
+/**
+ * @author ${Configuration.author}
+ * @date ${.now?date}
+ */
+<#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
+@Mapper
+public interface ${MapperClassName} extends BaseMapper<${ClassName}> {
 
-    <select id="get" resultMap="${EntityName}ResultMap">
-        SELECT
-        <include refid="${EntityName}Columns" />
-        FROM `${TableName}` <include refid="${EntityName}Joins" />
-        <where>
-            `${TableName}`.`${PrimaryColumn.columnName}` = ${r"#{"}${PrimaryColumn.propertyName}${r"}"}
-        </where>
-    </select>
+}
+<#elseif Configuration.jpaEnable><#-- jpa模式 -->
+@Repository
+public interface ${MapperClassName} extends JpaRepository<${ClassName}, Serializable> {
 
-    <select id="findAll" resultMap="${EntityName}ResultMap">
-        SELECT
-        <include refid="${EntityName}Columns" />
-        FROM `${TableName}` <include refid="${EntityName}Joins" />
-        <where>
-        </where>
-    </select>
+}
+<#else><#-- mybatis模式 -->
+@Mapper
+public interface ${MapperClassName} {
 
-    <insert id="insert">
-        INSERT INTO `${TableName}`(
-            ${InsertProperties}
-        )
-        VALUES (
-            ${InsertValues}
-        )
-    </insert>
+    ${ClassName} get(Serializable id);
 
-    <insert id="insertBatch">
-        INSERT INTO ${TableName}(
-            ${InsertProperties}
-        )
-        VALUES
-        <foreach collection ="list" item="${EntityName}" separator =",">
-        (
-            ${InsertBatchValues}
-        )
-        </foreach>
-    </insert>
+    List<${ClassName}> findAll();
 
-    <update id="update">
-        UPDATE `${TableName}` SET
-        ${UpdateProperties}
-        WHERE `${PrimaryColumn.columnName}` = ${r"#{"}${PrimaryColumn.propertyName}${r"}"}
-    </update>
+    int insert(${ClassName} ${ClassAttrName});
 
-    <update id="delete">
-        DELETE FROM `${TableName}`
-        WHERE `${PrimaryColumn.columnName}` = ${r"#{"}${PrimaryColumn.propertyName}${r"}"}
-    </update>
+    int insertBatch(List<${ClassName}> ${ClassAttrName}s);
 
-</mapper>
+    int update(${ClassName} ${ClassAttrName});
+
+    int delete(${ClassName} ${ClassAttrName});
+
+}
+</#if>

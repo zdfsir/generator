@@ -1,5 +1,6 @@
 package com.greedystar.generator.invoker;
 
+import com.greedystar.generator.dto.TableDTO;
 import com.greedystar.generator.invoker.base.AbstractBuilder;
 import com.greedystar.generator.invoker.base.AbstractInvoker;
 import com.greedystar.generator.utils.ConfigUtil;
@@ -17,8 +18,12 @@ public class Many2ManyInvoker extends AbstractInvoker {
 
     @Override
     protected void queryMetaData() throws Exception {
-        tableInfos = connectionUtil.getMetaData(tableName);
-        parentTableInfos = connectionUtil.getMetaData(parentTableName);
+        TableDTO tableDTO = connectionUtil.getMetaData(tableName);
+        TableDTO parentTableDTO = connectionUtil.getMetaData(parentTableName);
+        super.tableDTO = tableDTO;
+        super.parentTableDTO = parentTableDTO;
+        tableInfos = tableDTO.getTableInfoList();
+        parentTableInfos = parentTableDTO.getTableInfoList();
     }
 
     @Override

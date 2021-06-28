@@ -1,7 +1,14 @@
 package com.greedystar.generator.entity;
 
+import cn.hutool.core.collection.CollectionUtil;
+import com.greedystar.generator.dto.TableIndexColumnDTO;
+import com.greedystar.generator.enums.IndexTypeEnum;
 import com.greedystar.generator.utils.ConvertorUtil;
 import com.greedystar.generator.utils.StringUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.JDBCType;
@@ -12,6 +19,10 @@ import java.sql.JDBCType;
  * @author GreedyStar
  * @since 2018/4/19
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ColumnInfo implements Serializable {
     /**
      * 列名
@@ -41,6 +52,15 @@ public class ColumnInfo implements Serializable {
      * 是否主键
      */
     private boolean isPrimaryKey;
+    /**
+     * 是否唯一索引列
+     */
+    private boolean isUnique;
+
+    /**
+     * 索引信息
+     */
+    private TableIndexColumnDTO indexInfo;
 
     public ColumnInfo(String columnName, int columnType, String remarks, String tableRemarks, boolean isPrimaryKey) {
         this.columnName = columnName;
@@ -52,59 +72,16 @@ public class ColumnInfo implements Serializable {
         this.isPrimaryKey = isPrimaryKey;
     }
 
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    public JDBCType getColumnType() {
-        return columnType;
-    }
-
-    public void setColumnType(JDBCType columnType) {
-        this.columnType = columnType;
-    }
-
-    public String getPropertyType() {
-        return propertyType;
-    }
-
-    public void setPropertyType(String propertyType) {
-        this.propertyType = propertyType;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public String getTableRemarks() {
-        return tableRemarks;
-    }
-
-    public void setTableRemarks(String tableRemarks) {
-        this.tableRemarks = tableRemarks;
-    }
-
-    public boolean isPrimaryKey() {
-        return isPrimaryKey;
-    }
-
-    public void setPrimaryKey(boolean primaryKey) {
-        isPrimaryKey = primaryKey;
+    public boolean isUnique() {
+        if (null != indexInfo
+                // 有唯一索引标记
+                && IndexTypeEnum.UNI.equals(indexInfo.getIndexType())
+                // 唯一索引列不为空
+                && CollectionUtil.isNotEmpty(indexInfo.getIndexColumnList())
+                // 唯一索引列只有一个，即当前列
+                && indexInfo.getIndexColumnList().size() == 1) {
+            return true;
+        }
+        return false;
     }
 }

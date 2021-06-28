@@ -20,10 +20,10 @@ public class FreemarkerConfigUtil {
      */
     private static volatile Configuration configuration;
     public final static int TYPE_ENTITY = 0;
-    public final static int TYPE_DAO = 1;
+    public final static int TYPE_MAPPER = 1;
     public final static int TYPE_SERVICE = 2;
     public final static int TYPE_CONTROLLER = 3;
-    public final static int TYPE_MAPPER = 4;
+    public final static int TYPE_MAPPER_XML = 4;
     public final static int TYPE_INTERFACE = 5;
 
     public static Configuration getInstance() {

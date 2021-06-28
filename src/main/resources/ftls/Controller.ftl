@@ -19,10 +19,10 @@ import java.util.Map;
  * @date ${.now?date}
  */
 <#if Configuration.swaggerEnable>
-@Api(value = "/${EntityName}", tags = "${ClassName}管理接口")
+@Api(value = "/${ClassAttrName}", tags = "${ClassName}管理接口")
 </#if>
 @RestController
-@RequestMapping(value = "/${EntityName}")
+@RequestMapping(value = "/${ClassAttrName}")
 public class ${ControllerClassName} {
     @Autowired
     private ${ServiceClassName} ${ServiceEntityName};
@@ -33,12 +33,12 @@ public class ${ControllerClassName} {
     @GetMapping(value = "")
     public Object list() {
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-        List<${ClassName}> ${EntityName}s = ${ServiceEntityName}.list();
+        List<${ClassName}> ${ClassAttrName}s = ${ServiceEntityName}.list();
         <#else><#-- mybatis或jpa模式 -->
-        List<${ClassName}> ${EntityName}s = ${ServiceEntityName}.findAll();
+        List<${ClassName}> ${ClassAttrName}s = ${ServiceEntityName}.findAll();
         </#if>
         Map<String, Object> result = new HashMap<>();
-        result.put("data", ${EntityName}s);
+        result.put("data", ${ClassAttrName}s);
         result.put("status", 200);
         result.put("message", "OK");
         return result;
@@ -50,12 +50,12 @@ public class ${ControllerClassName} {
     @GetMapping(value = "/{id}")
     public Object get(@PathVariable("id") ${pkType} id) {
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-        ${ClassName} ${EntityName} = ${ServiceEntityName}.getById(id);
+        ${ClassName} ${ClassAttrName} = ${ServiceEntityName}.getById(id);
         <#else><#-- mybatis或jpa模式 -->
-        ${ClassName} ${EntityName} = ${ServiceEntityName}.get(id);
+        ${ClassName} ${ClassAttrName} = ${ServiceEntityName}.get(id);
         </#if>
         Map<String, Object> result = new HashMap<>();
-        result.put("data", ${EntityName});
+        result.put("data", ${ClassAttrName});
         result.put("status", 200);
         result.put("message", "OK");
         return result;
@@ -65,13 +65,13 @@ public class ${ControllerClassName} {
     @ApiOperation(value = "创建${ClassName}", httpMethod = "POST")
     </#if>
     @PostMapping(value = "")
-    public Object post(@RequestBody ${ClassName} ${EntityName}) {
+    public Object post(@RequestBody ${ClassName} ${ClassAttrName}) {
         Map<String, Object> result = new HashMap<>();
         try {
             <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-            ${ServiceEntityName}.save(${EntityName});
+            ${ServiceEntityName}.save(${ClassAttrName});
             <#else><#-- mybatis或jpa模式 -->
-            ${ServiceEntityName}.insert(${EntityName});
+            ${ServiceEntityName}.insert(${ClassAttrName});
             </#if>
             result.put("status", 200);
             result.put("message", "OK");
@@ -87,13 +87,13 @@ public class ${ControllerClassName} {
     @ApiOperation(value = "修改${ClassName}信息", httpMethod = "PUT")
     </#if>
     @PutMapping(value = "")
-    public Object put(@RequestBody ${ClassName} ${EntityName}) {
+    public Object put(@RequestBody ${ClassName} ${ClassAttrName}) {
         Map<String, Object> result = new HashMap<>();
         try {
             <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-            ${ServiceEntityName}.updateById(${EntityName});
+            ${ServiceEntityName}.updateById(${ClassAttrName});
             <#else><#-- mybatis或jpa模式 -->
-            ${ServiceEntityName}.update(${EntityName});
+            ${ServiceEntityName}.update(${ClassAttrName});
             </#if>
             result.put("status", 200);
             result.put("message", "OK");
@@ -110,13 +110,13 @@ public class ${ControllerClassName} {
     @ApiOperation(value = "删除${ClassName}", httpMethod = "DELETE")
     </#if>
     @DeleteMapping(value = "")
-    public Object delete(@RequestBody ${ClassName} ${EntityName}) {
+    public Object delete(@RequestBody ${ClassName} ${ClassAttrName}) {
         Map<String, Object> result = new HashMap<>();
         try {
             <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-            ${ServiceEntityName}.removeById(${EntityName}.getId());
+            ${ServiceEntityName}.removeById(${ClassAttrName}.getId());
             <#else><#-- mybatis或jpa模式 -->
-            ${ServiceEntityName}.delete(${EntityName});
+            ${ServiceEntityName}.delete(${ClassAttrName});
             </#if>
             result.put("status", 200);
             result.put("message", "OK");

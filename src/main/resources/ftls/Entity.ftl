@@ -2,9 +2,13 @@ package ${Configuration.packageName}.${Configuration.path.entity};
 
 <#if Configuration.lombokEnable>
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 </#if>
 <#if Configuration.mybatisPlusEnable>
 import com.baomidou.mybatisplus.annotation.*;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 <#elseif Configuration.jpaEnable>
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -22,6 +26,9 @@ import java.util.List;
  */
 <#if Configuration.lombokEnable>
 @Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@ApiModel(value="${Remarks}", description="")
 </#if>
 <#if Configuration.mybatisPlusEnable>
 @TableName(value = "${TableName}")

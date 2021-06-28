@@ -1,5 +1,11 @@
 package com.greedystar.generator.task;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.Singleton;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.db.Entity;
+import com.alibaba.fastjson.JSON;
+import com.greedystar.generator.dto.EntityData;
 import com.greedystar.generator.entity.ColumnInfo;
 import com.greedystar.generator.entity.Constant;
 import com.greedystar.generator.entity.IdStrategy;
@@ -8,7 +14,9 @@ import com.greedystar.generator.invoker.base.AbstractInvoker;
 import com.greedystar.generator.task.base.AbstractTask;
 import com.greedystar.generator.utils.*;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +26,7 @@ import java.util.Map;
  * @author GreedyStar
  * @since 2018/4/20
  */
+@Slf4j
 public class EntityTask extends AbstractTask {
     /**
      * 业务表元数据
@@ -27,6 +36,8 @@ public class EntityTask extends AbstractTask {
      * 任务模式
      */
     private Mode mode;
+
+    private static DataReaderUtil dataReaderUtil = Singleton.get(DataReaderUtil.class, "EntityTask");
 
     public EntityTask(Mode mode, AbstractInvoker invoker) {
         this.mode = mode;
@@ -40,28 +51,18 @@ public class EntityTask extends AbstractTask {
 
     @Override
     public void run() throws IOException, TemplateException {
-        // 构造Entity填充数据
-        String className = null;
-        String remarks = null;
-        if (Mode.ENTITY_MAIN.equals(mode)) {
-            className = ConfigUtil.getConfiguration().getName().getEntity().replace(Constant.PLACEHOLDER, invoker.getClassName());
-            remarks = invoker.getTableInfos().get(0).getTableRemarks();
-        } else if (Mode.ENTITY_PARENT.equals(mode)) {
-            className = ConfigUtil.getConfiguration().getName().getEntity().replace(Constant.PLACEHOLDER, invoker.getParentClassName());
-            remarks = invoker.getParentTableInfos().get(0).getTableRemarks();
-        }
-        Map<String, Object> entityData = new HashMap<>();
-        entityData.put("Configuration", ConfigUtil.getConfiguration());
-        entityData.put("TableName", invoker.getTableName());
-        entityData.put("ClassName", className);
-        entityData.put("Remarks", remarks);
-        entityData.put("Properties", entityProperties(invoker));
-        entityData.put("Methods", entityMethods(invoker));
+        EntityData entityDataObject = dataReaderUtil.reader(mode, invoker);
+        Map<String, Object> data = Convert.toMap(String.class, Object.class, entityDataObject);
+        data.put("Properties", entityProperties(invoker));
+        data.put("Methods", entityMethods(invoker));
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName())
                 + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntity());
-        String fileName = ConfigUtil.getConfiguration().getName().getEntity().replace(Constant.PLACEHOLDER, className) + ".java";
+        String fileName = ConfigUtil.getConfiguration().getName().getEntity().replace(Constant.PLACEHOLDER, entityDataObject.getClassName()) + ".java";
+        if (log.isDebugEnabled()) {
+//            log.debug(">>> {} 元数据 [{}]" , this.getClass().getName(), JSON.toJSONString(data, true));
+        }
         // 生成Entity文件
-        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY, entityData, filePath, fileName);
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY, data, filePath, fileName);
     }
 
     /**
@@ -191,13 +192,20 @@ public class EntityTask extends AbstractTask {
     public void generateORMAnnotation(StringBuilder sb, ColumnInfo info) {
         if (ConfigUtil.getConfiguration().isMybatisPlusEnable()) {
             if (info.isPrimaryKey()) {
-                if (ConfigUtil.getConfiguration().getIdStrategy() == null || ConfigUtil.getConfiguration().getIdStrategy() == IdStrategy.AUTO) {
-                    sb.append(Constant.SPACE_4).append(String.format("@TableId(value = \"%s\", type = IdType.AUTO)\n", info.getColumnName()));
+                if (ConfigUtil.getConfiguration().getIdStrategy() == null ||
+                        ConfigUtil.getConfiguration().getIdStrategy() == IdStrategy.AUTO) {
+                    sb.append(Constant.SPACE_4)
+                            .append(String.format("@TableId(value = \"%s\", type = IdType.AUTO)\n", info.getColumnName()));
                 } else if (ConfigUtil.getConfiguration().getIdStrategy() == IdStrategy.UUID) {
-                    sb.append(Constant.SPACE_4).append(String.format("@TableId(value = \"%s\", type = IdType.ASSIGN_UUID)\n", info.getColumnName()));
+                    sb.append(Constant.SPACE_4)
+                            .append(String.format("@TableId(value = \"%s\", type = IdType.ASSIGN_UUID)\n", info.getColumnName()))
+                    ;
                 }
             } else {
-                sb.append(Constant.SPACE_4).append(String.format("@TableField(value = \"%s\")\n", info.getColumnName()));
+                sb.append(Constant.SPACE_4)
+                        .append(String.format("@ApiModelProperty(value=\"%s\")\n", info.getRemarks()))
+                        .append(Constant.SPACE_4)
+                        .append(String.format("@TableField(value = \"%s\")\n", info.getColumnName()));
             }
         } else if (ConfigUtil.getConfiguration().isJpaEnable()) {
             if (info.isPrimaryKey()) {

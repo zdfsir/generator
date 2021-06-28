@@ -1,5 +1,6 @@
 package com.greedystar.generator.invoker;
 
+import com.greedystar.generator.dto.TableDTO;
 import com.greedystar.generator.invoker.base.AbstractBuilder;
 import com.greedystar.generator.invoker.base.AbstractInvoker;
 import com.greedystar.generator.utils.StringUtil;
@@ -16,7 +17,9 @@ public class SingleInvoker extends AbstractInvoker {
 
     @Override
     protected void queryMetaData() throws Exception {
-        tableInfos = connectionUtil.getMetaData(tableName);
+        TableDTO tableDTO = connectionUtil.getMetaData(tableName);
+        super.tableInfos = tableDTO.getTableInfoList();
+        super.tableDTO = tableDTO;
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.greedystar.generator.task;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.Singleton;
+import com.greedystar.generator.dto.EntityData;
 import com.greedystar.generator.entity.Constant;
 import com.greedystar.generator.invoker.base.AbstractInvoker;
 import com.greedystar.generator.task.base.AbstractTask;
@@ -16,6 +19,8 @@ import java.util.Map;
  */
 public class ServiceTask extends AbstractTask {
 
+    private static DataReaderUtil dataReaderUtil = Singleton.get(DataReaderUtil.class, "ServiceTask");
+
     public ServiceTask(AbstractInvoker invoker) {
         this.invoker = invoker;
     }
@@ -23,14 +28,9 @@ public class ServiceTask extends AbstractTask {
     @Override
     public void run() throws IOException, TemplateException {
         // 构造Service填充数据
-        Map<String, Object> serviceData = new HashMap<>();
-        serviceData.put("Configuration", ConfigUtil.getConfiguration());
-        serviceData.put("ClassName", ConfigUtil.getConfiguration().getName().getEntity().replace(Constant.PLACEHOLDER, invoker.getClassName()));
-        serviceData.put("EntityName", StringUtil.firstToLowerCase(ConfigUtil.getConfiguration().getName().getEntity()
-                .replace(Constant.PLACEHOLDER, invoker.getClassName())));
-        serviceData.put("DaoClassName", ConfigUtil.getConfiguration().getName().getDao().replace(Constant.PLACEHOLDER, invoker.getClassName()));
-        serviceData.put("DaoEntityName", StringUtil.firstToLowerCase(ConfigUtil.getConfiguration().getName().getDao()
-                .replace(Constant.PLACEHOLDER, invoker.getClassName())));
+
+        EntityData entityDataObject = dataReaderUtil.reader(null, invoker);
+        Map<String, Object> data = Convert.toMap(String.class, Object.class, entityDataObject);
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName())
                 + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getService());
         String fileName;
@@ -39,24 +39,24 @@ public class ServiceTask extends AbstractTask {
          */
         String serviceClassName = ConfigUtil.getConfiguration().getName().getService().replace(Constant.PLACEHOLDER, invoker.getClassName());
         if (StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getInterf())) {
-            serviceData.put("ServiceClassName", serviceClassName);
-            serviceData.put("Implements", "");
-            serviceData.put("InterfaceImport", "");
-            serviceData.put("Override", "");
+            data.put("ServiceClassName", serviceClassName);
+            data.put("Implements", "");
+            data.put("InterfaceImport", "");
+            data.put("Override", "");
             fileName = ConfigUtil.getConfiguration().getName().getService().replace(Constant.PLACEHOLDER, invoker.getClassName()) + ".java";
         } else {
             // Service接口实现类默认由Impl结尾
             serviceClassName = serviceClassName.contains("Impl") ? serviceClassName : serviceClassName + "Impl";
-            serviceData.put("ServiceClassName", serviceClassName);
-            serviceData.put("Implements", "implements " + ConfigUtil.getConfiguration().getName().getInterf()
+            data.put("ServiceClassName", serviceClassName);
+            data.put("Implements", "implements " + ConfigUtil.getConfiguration().getName().getInterf()
                     .replace(Constant.PLACEHOLDER, invoker.getClassName()));
-            serviceData.put("InterfaceImport", "import " + ConfigUtil.getConfiguration().getPackageName() + "."
+            data.put("InterfaceImport", "import " + ConfigUtil.getConfiguration().getPackageName() + "."
                     + ConfigUtil.getConfiguration().getPath().getInterf() + "."
                     + ConfigUtil.getConfiguration().getName().getInterf().replace(Constant.PLACEHOLDER, invoker.getClassName()) + ";");
-            serviceData.put("Override", "\n    @Override");
+            data.put("Override", "\n    @Override");
             fileName = serviceClassName + ".java";
         }
         // 生成Service文件
-        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_SERVICE, serviceData, filePath, fileName);
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_SERVICE, data, filePath, fileName);
     }
 }

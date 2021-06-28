@@ -1,6 +1,8 @@
 package com.greedystar.generator.invoker.base;
 
 import com.greedystar.generator.db.ConnectionUtil;
+import com.greedystar.generator.dto.TableDTO;
+import com.greedystar.generator.dto.TableIndexColumnDTO;
 import com.greedystar.generator.entity.ColumnInfo;
 import com.greedystar.generator.task.base.AbstractTask;
 import com.greedystar.generator.utils.TaskQueue;
@@ -16,6 +18,11 @@ import java.util.concurrent.Executors;
  * @since 2018/9/5
  */
 public abstract class AbstractInvoker implements Invoker {
+
+    /**
+     * 库名
+     */
+    protected String databaseName;
     /**
      * 主表名
      */
@@ -49,9 +56,18 @@ public abstract class AbstractInvoker implements Invoker {
      */
     protected List<ColumnInfo> tableInfos;
     /**
+     * 主表信息
+     */
+    protected TableDTO tableDTO;
+    /**
      * 父表元数据
      */
     protected List<ColumnInfo> parentTableInfos;
+
+    /**
+     * 父表信息
+     */
+    protected TableDTO parentTableDTO;
     /**
      * 数据库连接工具
      */

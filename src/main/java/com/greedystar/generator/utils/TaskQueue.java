@@ -33,11 +33,11 @@ public class TaskQueue {
         if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getInterf())) {
             taskQueue.add(new InterfaceTask(invoker));
         }
-        if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getDao())) {
-            taskQueue.add(new DaoTask(invoker));
-        }
         if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getMapper())) {
             taskQueue.add(new MapperTask(invoker));
+        }
+        if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getMapperXML())) {
+            taskQueue.add(new MapperXMLTask(invoker));
         }
     }
 

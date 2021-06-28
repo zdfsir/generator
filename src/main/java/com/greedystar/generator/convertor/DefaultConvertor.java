@@ -49,9 +49,13 @@ public class DefaultConvertor implements TypeConvertor {
                 sb.append("String");
                 break;
             case DATE:
+                sb.append("java.time.LocalDate");
+                break;
             case TIME:
+                sb.append("java.time.LocalTime");
+                break;
             case TIMESTAMP:
-                sb.append("Date");
+                sb.append("java.time.LocalDateTime");
                 break;
             case CLOB:
             case NCLOB:

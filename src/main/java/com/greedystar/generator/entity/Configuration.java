@@ -1,5 +1,10 @@
 package com.greedystar.generator.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +13,10 @@ import java.io.Serializable;
  * @author GreedyStar
  * @since 2018/9/7
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Configuration implements Serializable {
     /**
      * 代码作者
@@ -62,114 +71,17 @@ public class Configuration implements Serializable {
      */
     private Name name;
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
-    public String getConvertor() {
-        return convertor;
-    }
-
-    public void setConvertor(String convertor) {
-        this.convertor = convertor;
-    }
-
-    public boolean isLombokEnable() {
-        return lombokEnable;
-    }
-
-    public void setLombokEnable(boolean lombokEnable) {
-        this.lombokEnable = lombokEnable;
-    }
-
-    public boolean isMapperUnderSource() {
-        return mapperUnderSource;
-    }
-
-    public void setMapperUnderSource(boolean mapperUnderSource) {
-        this.mapperUnderSource = mapperUnderSource;
-    }
-
-    public boolean isSwaggerEnable() {
-        return swaggerEnable;
-    }
-
-    public void setSwaggerEnable(boolean swaggerEnable) {
-        this.swaggerEnable = swaggerEnable;
-    }
-
-    public boolean isMybatisPlusEnable() {
-        return mybatisPlusEnable;
-    }
-
-    public void setMybatisPlusEnable(boolean mybatisPlusEnable) {
-        this.mybatisPlusEnable = mybatisPlusEnable;
-    }
-
-    public boolean isJpaEnable() {
-        return jpaEnable;
-    }
-
-    public void setJpaEnable(boolean jpaEnable) {
-        this.jpaEnable = jpaEnable;
-    }
-
-    public boolean isFileOverride() {
-        return fileOverride;
-    }
-
-    public void setFileOverride(boolean fileOverride) {
-        this.fileOverride = fileOverride;
-    }
-
-    public IdStrategy getIdStrategy() {
-        return idStrategy;
-    }
-
-    public void setIdStrategy(IdStrategy idStrategy) {
-        this.idStrategy = idStrategy;
-    }
-
-    public Path getPath() {
-        return path;
-    }
-
-    public void setPath(Path path) {
-        this.path = path;
-    }
-
-    public Db getDb() {
-        return db;
-    }
-
-    public void setDb(Db db) {
-        this.db = db;
-    }
-
-    public Name getName() {
-        return name;
-    }
-
-    public void setName(Name name) {
-        this.name = name;
-    }
-
     /**
      * 数据库配置
      */
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Db {
+        /**
+         * 数据库名
+         */
+        private String schema;
         /**
          * 数据库URL
          */
@@ -182,44 +94,14 @@ public class Configuration implements Serializable {
          * 数据库密码
          */
         private String password;
-
-        public Db() {
-        }
-
-        public Db(String url, String username, String password) {
-            this.url = url;
-            this.username = username;
-            this.password = password;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
     }
 
     /**
      * 代码路径配置
      */
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Path {
         /**
          * Controller代码包路径
@@ -234,9 +116,9 @@ public class Configuration implements Serializable {
          */
         private String interf = "";
         /**
-         * Dao代码包路径
+         * Mapper代码包路径
          */
-        private String dao = "";
+        private String mapper = "";
         /**
          * Entity代码包路径
          */
@@ -244,73 +126,19 @@ public class Configuration implements Serializable {
         /**
          * Mapper映射文件路径
          */
-        private String mapper = "";
-
-        public Path() {
-        }
-
-        public Path(String controller, String service, String interf, String dao, String entity, String mapper) {
-            this.controller = controller;
-            this.service = service;
-            this.interf = interf;
-            this.dao = dao;
-            this.entity = entity;
-            this.mapper = mapper;
-        }
-
-        public String getController() {
-            return controller;
-        }
-
-        public void setController(String controller) {
-            this.controller = controller;
-        }
-
-        public String getService() {
-            return service;
-        }
-
-        public void setService(String service) {
-            this.service = service;
-        }
-
-        public String getInterf() {
-            return interf;
-        }
-
-        public void setInterf(String interf) {
-            this.interf = interf;
-        }
-
-        public String getDao() {
-            return dao;
-        }
-
-        public void setDao(String dao) {
-            this.dao = dao;
-        }
-
-        public String getEntity() {
-            return entity;
-        }
-
-        public void setEntity(String entity) {
-            this.entity = entity;
-        }
-
-        public String getMapper() {
-            return mapper;
-        }
-
-        public void setMapper(String mapper) {
-            this.mapper = mapper;
-        }
-
+        private String mapperXML = "";
+        /**
+         * Dao代码包路径
+         */
+        private String dao = "";
     }
 
     /**
      * 类名配置
      */
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Name {
         /**
          * Controller类的类名，默认为 $sController
@@ -325,9 +153,9 @@ public class Configuration implements Serializable {
          */
         private String interf = Constant.PLACEHOLDER + "Service";
         /**
-         * Dao类的类名，默认为$sDao
+         * Mapper类的类名，默认为$sMapper
          */
-        private String dao = Constant.PLACEHOLDER + "Dao";
+        private String mapper = Constant.PLACEHOLDER + "Mapper";
         /**
          * Entity类的类名，默认为$s
          */
@@ -335,67 +163,10 @@ public class Configuration implements Serializable {
         /**
          * Mapper映射文件的文件名，默认$sMapper
          */
-        private String mapper = Constant.PLACEHOLDER + "Mapper";
-
-        public Name() {
-        }
-
-        public Name(String controller, String service, String dao, String entity, String mapper) {
-            this.controller = controller;
-            this.service = service;
-            this.dao = dao;
-            this.entity = entity;
-            this.mapper = mapper;
-        }
-
-        public String getController() {
-            return controller;
-        }
-
-        public void setController(String controller) {
-            this.controller = controller;
-        }
-
-        public String getService() {
-            return service;
-        }
-
-        public void setService(String service) {
-            this.service = service;
-        }
-
-        public String getInterf() {
-            return interf;
-        }
-
-        public void setInterf(String interf) {
-            this.interf = interf;
-        }
-
-        public String getDao() {
-            return dao;
-        }
-
-        public void setDao(String dao) {
-            this.dao = dao;
-        }
-
-        public String getEntity() {
-            return entity;
-        }
-
-        public void setEntity(String entity) {
-            this.entity = entity;
-        }
-
-        public String getMapper() {
-            return mapper;
-        }
-
-        public void setMapper(String mapper) {
-            this.mapper = mapper;
-        }
-
+        private String mapperXML = Constant.PLACEHOLDER + "MapperXML";
+        /**
+         * Dao类的类名，默认为$sDao
+         */
+        private String dao = Constant.PLACEHOLDER + "Dao";
     }
-
 }

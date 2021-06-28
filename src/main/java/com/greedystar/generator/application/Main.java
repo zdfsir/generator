@@ -6,6 +6,10 @@ import com.greedystar.generator.invoker.One2ManyInvoker;
 import com.greedystar.generator.invoker.SingleInvoker;
 import com.greedystar.generator.invoker.base.Invoker;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+
 /**
  * @author GreedyStar
  * @since 2018/9/5
@@ -13,7 +17,29 @@ import com.greedystar.generator.invoker.base.Invoker;
 public class Main {
 
     public static void main(String[] args) {
+        single();
+    }
 
+    public static void single() {
+        Map<String, String> invokerMap = new HashMap<>();
+        invokerMap.put("account", "Account");
+//        invokerMap.put("account_admin", "AccountAdmin");
+//        invokerMap.put("account_group", "AccountGroup");
+//        invokerMap.put("account_personal", "AccountPersonal");
+//        invokerMap.put("account_referrer_relation", "AccountReferrerRelation");
+//        invokerMap.put("account_referrer_relation_history", "AccountReferrerRelationHistory");
+//        invokerMap.put("account_role_relation", "AccountRoleRelation");
+
+        invokerMap.forEach(new BiConsumer<String, String>() {
+            @Override
+            public void accept(String tableName, String className) {
+                Invoker invoker = new SingleInvoker.Builder()
+                        .setTableName(tableName)
+                        .setClassName(className)
+                        .build();
+                invoker.execute();
+            }
+        });
     }
 
     public static void many2many() {
@@ -47,14 +73,6 @@ public class Main {
                 .setParentTableName("article")
                 .setParentClassName("Article")
                 .setParentForeignKey("user_id")
-                .build();
-        invoker.execute();
-    }
-
-    public static void single() {
-        Invoker invoker = new SingleInvoker.Builder()
-                .setTableName("user")
-                .setClassName("User")
                 .build();
         invoker.execute();
     }

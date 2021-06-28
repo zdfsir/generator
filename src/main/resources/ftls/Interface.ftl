@@ -25,26 +25,26 @@ public interface ${InterfaceClassName} {
 
     List<${ClassName}> findAll();
 
-    ${ClassName} insert(${ClassName} ${EntityName});
+    ${ClassName} insert(${ClassName} ${ClassAttrName});
 
-    List<${ClassName}> insertBatch(List<${ClassName}> ${EntityName}s);
+    List<${ClassName}> insertBatch(List<${ClassName}> ${ClassAttrName}s);
 
-    ${ClassName} update(${ClassName} ${EntityName});
+    ${ClassName} update(${ClassName} ${ClassAttrName});
 
-    void delete(${ClassName} ${EntityName});
+    void delete(${ClassName} ${ClassAttrName});
 
     <#else><#-- mybatis模式 -->
     ${ClassName} get(Serializable id);
 
     List<${ClassName}> findAll();
 
-    int insert(${ClassName} ${EntityName});
+    int insert(${ClassName} ${ClassAttrName});
 
-    int insertBatch(List<${ClassName}> ${EntityName}s);
+    int insertBatch(List<${ClassName}> ${ClassAttrName}s);
 
-    int update(${ClassName} ${EntityName});
+    int update(${ClassName} ${ClassAttrName});
 
-    int delete(${ClassName} ${EntityName});
+    int delete(${ClassName} ${ClassAttrName});
 
     </#if>
 }

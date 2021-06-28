@@ -2,7 +2,6 @@ package com.greedystar.generator.utils;
 
 import com.greedystar.generator.entity.Configuration;
 import com.greedystar.generator.entity.Constant;
-import com.greedystar.generator.entity.IdStrategy;
 import org.apache.commons.io.IOUtils;
 import org.yaml.snakeyaml.Yaml;
 
@@ -80,9 +79,9 @@ public class ConfigUtil {
             if (null == ConfigUtil.configuration.getName()) {
                 Configuration.Name nameConfig = new Configuration.Name();
                 if (ConfigUtil.configuration.isJpaEnable()) {
-                    nameConfig.setDao(Constant.PLACEHOLDER + "Repository");
+                    nameConfig.setMapper(Constant.PLACEHOLDER + "Repository");
                 } else if (ConfigUtil.configuration.isMybatisPlusEnable()) {
-                    nameConfig.setDao(Constant.PLACEHOLDER + "Mapper");
+                    nameConfig.setMapper(Constant.PLACEHOLDER + "Mapper");
                 }
                 ConfigUtil.configuration.setName(nameConfig);
             }
@@ -107,7 +106,7 @@ public class ConfigUtil {
                 throw new Exception("Can not enable JPA mode and MyBatis-Plus mode at the same time.");
             } else if (ConfigUtil.configuration.isMybatisPlusEnable() || ConfigUtil.configuration.isJpaEnable()) {
                 // 禁止生成mapper.xml
-                ConfigUtil.configuration.getPath().setMapper(null);
+                ConfigUtil.configuration.getPath().setMapperXML(null);
             }
         } catch (Exception e) {
             e.printStackTrace();

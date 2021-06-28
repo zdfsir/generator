@@ -1,6 +1,6 @@
 package ${Configuration.packageName}.${Configuration.path.service};
 
-import ${Configuration.packageName}.${Configuration.path.dao}.${DaoClassName};
+import ${Configuration.packageName}.${Configuration.path.mapper}.${MapperClassName};
 import ${Configuration.packageName}.${Configuration.path.entity}.${ClassName};
 ${InterfaceImport}
 <#if Configuration.mybatisPlusEnable>
@@ -20,62 +20,62 @@ import java.util.List;
  */
 @Service
 <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-public class ${ServiceClassName} extends ServiceImpl<${DaoClassName}, ${ClassName}> ${Implements} {
+public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${ClassName}> ${Implements} {
 
 }
 <#else><#-- mybatis或jpa模式 -->
 public class ${ServiceClassName} ${Implements} {
     @Autowired
-    private ${DaoClassName} ${DaoEntityName};
+    private ${MapperClassName} ${MapperAttrName};
     <#if Configuration.jpaEnable><#-- jpa模式 -->
     ${Override}
     public ${ClassName} get(Serializable id) {
-        return ${DaoEntityName}.findById(id).orElse(null);
+        return ${MapperAttrName}.findById(id).orElse(null);
     }
     ${Override}
     public List<${ClassName}> findAll() {
-        return ${DaoEntityName}.findAll();
+        return ${MapperAttrName}.findAll();
     }
     ${Override}
-    public ${ClassName} insert(${ClassName} ${EntityName}) {
-        return ${DaoEntityName}.save(${EntityName});
+    public ${ClassName} insert(${ClassName} ${ClassAttrName}) {
+        return ${MapperAttrName}.save(${ClassAttrName});
     }
     ${Override}
-    public List<${ClassName}> insertBatch(List<${ClassName}> ${EntityName}s){
-        return ${DaoEntityName}.saveAll(${EntityName}s);
+    public List<${ClassName}> insertBatch(List<${ClassName}> ${ClassAttrName}s){
+        return ${MapperAttrName}.saveAll(${ClassAttrName}s);
     }
     ${Override}
-    public ${ClassName} update(${ClassName} ${EntityName}) {
-        return ${DaoEntityName}.save(${EntityName});
+    public ${ClassName} update(${ClassName} ${ClassAttrName}) {
+        return ${MapperAttrName}.save(${ClassAttrName});
     }
     ${Override}
-    public void delete(${ClassName} ${EntityName}) {
-        ${DaoEntityName}.delete(${EntityName});
+    public void delete(${ClassName} ${ClassAttrName}) {
+        ${MapperAttrName}.delete(${ClassAttrName});
     }
     <#else><#-- mybatis模式 -->
     ${Override}
     public ${ClassName} get(Serializable id) {
-        return ${DaoEntityName}.get(id);
+        return ${MapperAttrName}.get(id);
     }
     ${Override}
     public List<${ClassName}> findAll() {
-        return ${DaoEntityName}.findAll();
+        return ${MapperAttrName}.findAll();
     }
     ${Override}
-    public int insert(${ClassName} ${EntityName}) {
-        return ${DaoEntityName}.insert(${EntityName});
+    public int insert(${ClassName} ${ClassAttrName}) {
+        return ${MapperAttrName}.insert(${ClassAttrName});
     }
     ${Override}
-    public int insertBatch(List<${ClassName}> ${EntityName}s) {
-        return ${DaoEntityName}.insertBatch(${EntityName}s);
+    public int insertBatch(List<${ClassName}> ${ClassAttrName}s) {
+        return ${MapperAttrName}.insertBatch(${ClassAttrName}s);
     }
     ${Override}
-    public int update(${ClassName} ${EntityName}) {
-        return ${DaoEntityName}.update(${EntityName});
+    public int update(${ClassName} ${ClassAttrName}) {
+        return ${MapperAttrName}.update(${ClassAttrName});
     }
     ${Override}
-    public int delete(${ClassName} ${EntityName}) {
-        return ${DaoEntityName}.delete(${EntityName});
+    public int delete(${ClassName} ${ClassAttrName}) {
+        return ${MapperAttrName}.delete(${ClassAttrName});
     }
     </#if>
 }

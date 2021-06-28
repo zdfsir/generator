@@ -1,5 +1,8 @@
 package com.greedystar.generator.task;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.Singleton;
+import com.greedystar.generator.dto.EntityData;
 import com.greedystar.generator.entity.ColumnInfo;
 import com.greedystar.generator.entity.Constant;
 import com.greedystar.generator.invoker.base.AbstractInvoker;
@@ -18,6 +21,8 @@ import java.util.Map;
  */
 public class ControllerTask extends AbstractTask {
 
+    private static DataReaderUtil dataReaderUtil = Singleton.get(DataReaderUtil.class, "ControllerTask");
+
     public ControllerTask(AbstractInvoker invoker) {
         this.invoker = invoker;
     }
@@ -25,8 +30,8 @@ public class ControllerTask extends AbstractTask {
     @Override
     public void run() throws IOException, TemplateException {
         // 构造Controller填充数据
-        Map<String, Object> controllerData = new HashMap<>();
-        controllerData.put("Configuration", ConfigUtil.getConfiguration());
+        EntityData entityDataObject = dataReaderUtil.reader(null, invoker);
+        Map<String, Object> data = Convert.toMap(String.class, Object.class, entityDataObject);
         String serviceClassName;
         String serviceImport;
         if (StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getInterf())) {
@@ -38,21 +43,16 @@ public class ControllerTask extends AbstractTask {
             serviceImport = String.format("import %s.%s.%s;", ConfigUtil.getConfiguration().getPackageName(),
                     ConfigUtil.getConfiguration().getPath().getInterf(), serviceClassName);
         }
-        controllerData.put("ServiceImport", serviceImport);
-        controllerData.put("ServiceClassName", serviceClassName);
-        controllerData.put("ServiceEntityName", StringUtil.firstToLowerCase(serviceClassName));
-        controllerData.put("ControllerClassName", ConfigUtil.getConfiguration().getName().getController()
-                .replace(Constant.PLACEHOLDER, invoker.getClassName()));
-        controllerData.put("ClassName", ConfigUtil.getConfiguration().getName().getEntity()
-                .replace(Constant.PLACEHOLDER, invoker.getClassName()));
-        controllerData.put("EntityName", StringUtil.firstToLowerCase(ConfigUtil.getConfiguration().getName().getEntity()
-                .replace(Constant.PLACEHOLDER, invoker.getClassName())));
-        controllerData.put("pkType", getPrimaryKeyType(invoker.getTableInfos()));
+        data.put("ServiceImport", serviceImport);
+        data.put("ServiceClassName", serviceClassName);
+        data.put("ServiceEntityName", StringUtil.firstToLowerCase(serviceClassName));
+        data.put("ControllerClassName", ConfigUtil.getConfiguration().getName().getController().replace(Constant.PLACEHOLDER, invoker.getClassName()));
+        data.put("pkType", getPrimaryKeyType(invoker.getTableInfos()));
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) +
                 StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getController());
         String fileName = ConfigUtil.getConfiguration().getName().getController().replace(Constant.PLACEHOLDER, invoker.getClassName()) + ".java";
         // 生成Controller文件
-        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_CONTROLLER, controllerData, filePath, fileName);
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_CONTROLLER, data, filePath, fileName);
     }
 
     /**

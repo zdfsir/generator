@@ -58,14 +58,14 @@ public class FileUtil {
         switch (type) {
             case FreemarkerConfigUtil.TYPE_ENTITY:
                 return FreemarkerConfigUtil.getInstance().getTemplate("Entity.ftl");
-            case FreemarkerConfigUtil.TYPE_DAO:
-                return FreemarkerConfigUtil.getInstance().getTemplate("Dao.ftl");
+            case FreemarkerConfigUtil.TYPE_MAPPER:
+                return FreemarkerConfigUtil.getInstance().getTemplate("Mapper.ftl");
             case FreemarkerConfigUtil.TYPE_SERVICE:
                 return FreemarkerConfigUtil.getInstance().getTemplate("Service.ftl");
             case FreemarkerConfigUtil.TYPE_CONTROLLER:
                 return FreemarkerConfigUtil.getInstance().getTemplate("Controller.ftl");
-            case FreemarkerConfigUtil.TYPE_MAPPER:
-                return FreemarkerConfigUtil.getInstance().getTemplate("Mapper.ftl");
+            case FreemarkerConfigUtil.TYPE_MAPPER_XML:
+                return FreemarkerConfigUtil.getInstance().getTemplate("MapperXML.ftl");
             case FreemarkerConfigUtil.TYPE_INTERFACE:
                 return FreemarkerConfigUtil.getInstance().getTemplate("Interface.ftl");
             default:
