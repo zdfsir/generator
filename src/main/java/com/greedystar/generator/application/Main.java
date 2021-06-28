@@ -23,12 +23,12 @@ public class Main {
     public static void single() {
         Map<String, String> invokerMap = new HashMap<>();
         invokerMap.put("account", "Account");
-//        invokerMap.put("account_admin", "AccountAdmin");
-//        invokerMap.put("account_group", "AccountGroup");
-//        invokerMap.put("account_personal", "AccountPersonal");
-//        invokerMap.put("account_referrer_relation", "AccountReferrerRelation");
-//        invokerMap.put("account_referrer_relation_history", "AccountReferrerRelationHistory");
-//        invokerMap.put("account_role_relation", "AccountRoleRelation");
+        invokerMap.put("account_admin", "AccountAdmin");
+        invokerMap.put("account_group", "AccountGroup");
+        invokerMap.put("account_personal", "AccountPersonal");
+        invokerMap.put("account_referrer_relation", "AccountReferrerRelation");
+        invokerMap.put("account_referrer_relation_history", "AccountReferrerRelationHistory");
+        invokerMap.put("account_role_relation", "AccountRoleRelation");
 
         invokerMap.forEach(new BiConsumer<String, String>() {
             @Override

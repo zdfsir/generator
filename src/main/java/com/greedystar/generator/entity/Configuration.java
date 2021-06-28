@@ -131,6 +131,12 @@ public class Configuration implements Serializable {
          * Dao代码包路径
          */
         private String dao = "";
+
+        private String entityVO = "";
+        private String entitySearchDTO = "";
+        private String entityRequestDTO = "";
+        private String daoInterface = "";
+        private String daoImpl = "";
     }
 
     /**
@@ -151,7 +157,7 @@ public class Configuration implements Serializable {
         /**
          * Service接口类的类名，默认为$sService
          */
-        private String interf = Constant.PLACEHOLDER + "Service";
+        private String interf = "I" + Constant.PLACEHOLDER + "Sv";
         /**
          * Mapper类的类名，默认为$sMapper
          */
@@ -168,5 +174,11 @@ public class Configuration implements Serializable {
          * Dao类的类名，默认为$sDao
          */
         private String dao = Constant.PLACEHOLDER + "Dao";
+
+        private String entityVO = Constant.PLACEHOLDER + "VO";
+        private String entitySearchDTO = Constant.PLACEHOLDER + "SearchDTO";
+        private String entityRequestDTO = Constant.PLACEHOLDER + "RequestDTO";
+        private String daoInterface = Constant.PLACEHOLDER + "Dao";
+        private String daoImpl = Constant.PLACEHOLDER + "DaoImpl";
     }
 }

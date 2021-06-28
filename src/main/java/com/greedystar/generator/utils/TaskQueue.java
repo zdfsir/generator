@@ -39,6 +39,12 @@ public class TaskQueue {
         if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getMapperXML())) {
             taskQueue.add(new MapperXMLTask(invoker));
         }
+        if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getDaoInterface())) {
+            taskQueue.add(new DaoInterfaceTask(invoker));
+        }
+        if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getDaoImpl())) {
+            taskQueue.add(new DaoImplTask(invoker));
+        }
     }
 
     /**
@@ -50,6 +56,7 @@ public class TaskQueue {
         initCommonTasks(invoker);
         if (!StringUtil.isEmpty(ConfigUtil.getConfiguration().getPath().getEntity())) {
             taskQueue.add(new EntityTask(Mode.ENTITY_MAIN, invoker));
+            taskQueue.add(new EntityVOTask(Mode.ENTITY_MAIN, invoker));
         }
     }
 

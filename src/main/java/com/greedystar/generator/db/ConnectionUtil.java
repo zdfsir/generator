@@ -200,7 +200,7 @@ public class ConnectionUtil {
         while (columnResultSet.next()) {
             int columnType = columnResultSet.getType();
             if (log.isDebugEnabled()) {
-                log.debug(">>> {} [{}] -> type: {}", i, columnResultSet.getObject(i), columnType);
+                log.debug(">>> 列遍历：{} [{}] -> type: {}", i, columnResultSet.getObject(i), columnType);
             }
             boolean isPrimaryKey;
             if (columnResultSet.getString("COLUMN_NAME").equals(primaryKey)) {
@@ -208,12 +208,20 @@ public class ConnectionUtil {
             } else {
                 isPrimaryKey = false;
             }
+            // 获得指定列的列名
+            String columnName = columnResultSet.getString("COLUMN_NAME");
             ColumnInfo info = new ColumnInfo(
-                    columnResultSet.getString("COLUMN_NAME"),
+                    columnName,
                     columnResultSet.getInt("DATA_TYPE"),
                     StringUtil.isEmpty(columnResultSet.getString("REMARKS")) ? "Unknown" : columnResultSet.getString("REMARKS"),
                     tableRemark,
                     isPrimaryKey);
+            int isNullable = columnResultSet.getInt("NULLABLE");
+            info.setIsRequired(isNullable == 0);
+            if (log.isDebugEnabled()) {
+                log.debug(">>> [ConnectionUtil.getColumnInfos] >>> 列信息: {}, {}", columnName, isNullable);
+            }
+
             columnInfos.add(info);
             i++;
         }

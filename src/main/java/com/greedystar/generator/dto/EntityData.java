@@ -1,5 +1,6 @@
 package com.greedystar.generator.dto;
 
+import com.greedystar.generator.entity.ColumnInfo;
 import com.greedystar.generator.entity.Configuration;
 import com.greedystar.generator.invoker.base.AbstractInvoker;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Copyright 2021 @http://www.rzhkj.com
@@ -76,4 +78,14 @@ public class EntityData implements Serializable {
      * Dao类属性名
      */
     private String DaoAttrName;
+
+    /**
+     * 唯一索引列
+     */
+    private List<ColumnInfo> uniqueColumnList;
+
+    /**
+     * 日期时间列集合
+     */
+    private List<ColumnInfo> dateTimeColumnList;
 }

@@ -1,11 +1,18 @@
 package com.greedystar.generator.utils;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSON;
 import com.greedystar.generator.dto.EntityData;
+import com.greedystar.generator.entity.ColumnInfo;
 import com.greedystar.generator.entity.Constant;
 import com.greedystar.generator.entity.Mode;
 import com.greedystar.generator.invoker.base.AbstractInvoker;
 import lombok.extern.slf4j.Slf4j;
+
+import java.sql.JDBCType;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Copyright 2021 @http://www.rzhkj.com
@@ -24,7 +31,7 @@ public class DataReaderUtil {
 
     public DataReaderUtil(String consumer) {
         if (log.isDebugEnabled()) {
-            log.debug(">>> consumer [{}]" , consumer);
+            log.debug(">>> consumer [{}]", consumer);
         }
         this.consumer = consumer;
     }
@@ -58,6 +65,8 @@ public class DataReaderUtil {
                 .InterfaceClassName(ConfigUtil.getConfiguration().getName().getInterf().replace(Constant.PLACEHOLDER, invoker.getClassName()))
                 .MapperAttrName(StringUtil.firstToLowerCase(ConfigUtil.getConfiguration().getName().getMapper().replace(Constant.PLACEHOLDER, invoker.getClassName())))
                 .Remarks(remarks)
+                .uniqueColumnList(this.queryUniqueColumnList(invoker.getTableInfos()))
+                .dateTimeColumnList(this.queryDateTimeColumnList(invoker.getTableInfos()))
                 ;
 
         EntityData entityData = builder.build();
@@ -69,5 +78,34 @@ public class DataReaderUtil {
         return entityData;
     }
 
+    /**
+     * 获得唯一索引列的集合
+     *
+     * @param tableInfos
+     * @return
+     */
+    private List<ColumnInfo> queryUniqueColumnList(List<ColumnInfo> tableInfos) {
+        if (CollectionUtil.isEmpty(tableInfos)) {
+            return null;
+        }
+        List<ColumnInfo> list = tableInfos.parallelStream().filter(o -> o.getIsUnique()).collect(Collectors.toList());
+        return list;
+    }
+
+    /**
+     * 获得日期时间列的集合
+     *
+     * @param tableInfos
+     * @return
+     */
+    private List<ColumnInfo> queryDateTimeColumnList(List<ColumnInfo> tableInfos) {
+        if (CollectionUtil.isEmpty(tableInfos)) {
+            return null;
+        }
+
+        List<JDBCType> jdbcTypeList = Arrays.asList(new JDBCType[]{JDBCType.DATE, JDBCType.TIME, JDBCType.TIMESTAMP});
+        List<ColumnInfo> list = tableInfos.parallelStream().filter(o -> jdbcTypeList.contains(o.getColumnType())).collect(Collectors.toList());
+        return list;
+    }
 
 }

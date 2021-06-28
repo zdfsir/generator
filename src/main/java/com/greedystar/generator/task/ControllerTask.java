@@ -2,6 +2,7 @@ package com.greedystar.generator.task;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Singleton;
+import com.google.common.base.CaseFormat;
 import com.greedystar.generator.dto.EntityData;
 import com.greedystar.generator.entity.ColumnInfo;
 import com.greedystar.generator.entity.Constant;
@@ -47,6 +48,7 @@ public class ControllerTask extends AbstractTask {
         data.put("ServiceClassName", serviceClassName);
         data.put("ServiceEntityName", StringUtil.firstToLowerCase(serviceClassName));
         data.put("ControllerClassName", ConfigUtil.getConfiguration().getName().getController().replace(Constant.PLACEHOLDER, invoker.getClassName()));
+        data.put("ClassMappingName", CaseFormatUtil.大写头字母驼峰To小写连字符隔开(entityDataObject.getClassName()));
         data.put("pkType", getPrimaryKeyType(invoker.getTableInfos()));
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) +
                 StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getController());

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.sql.JDBCType;
@@ -55,7 +56,16 @@ public class ColumnInfo implements Serializable {
     /**
      * 是否唯一索引列
      */
-    private boolean isUnique;
+    private Boolean isUnique;
+    /**
+     * 是否必填
+     */
+    private Boolean isRequired;
+
+    /**
+     * 数据库中类型的最大字符个数
+     */
+    private TypeLength typeLength;
 
     /**
      * 索引信息
@@ -72,7 +82,7 @@ public class ColumnInfo implements Serializable {
         this.isPrimaryKey = isPrimaryKey;
     }
 
-    public boolean isUnique() {
+    public boolean getIsUnique() {
         if (null != indexInfo
                 // 有唯一索引标记
                 && IndexTypeEnum.UNI.equals(indexInfo.getIndexType())
@@ -83,5 +93,12 @@ public class ColumnInfo implements Serializable {
             return true;
         }
         return false;
+    }
+
+    @Data
+    @Accessors(chain = true)
+    public static class TypeLength {
+        private int length;
+        private int scale;
     }
 }

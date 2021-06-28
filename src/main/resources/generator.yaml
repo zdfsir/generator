@@ -12,11 +12,21 @@ path:
   dao: dao
   entity: entity
   mapper: mapper
+  entityVO: vo
+  entitySearchDTO: dto
+  entityRequestDTO: dto
+  daoInterface: dao
+  daoImpl: dao.impl
 # 生成文件的名字
 name:
   interf: I$sSv
   mapper: $sMapper
   dao: $sDao
+  entityVO: $sVO
+  entitySearchDTO: $sSearchDTO
+  entityRequestDTO: $sRequestDTO
+  daoInterface: $sDao
+  daoImpl: $sDaoImpl
 
 # 代码作者
 author: borong

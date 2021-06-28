@@ -25,6 +25,11 @@ public class FreemarkerConfigUtil {
     public final static int TYPE_CONTROLLER = 3;
     public final static int TYPE_MAPPER_XML = 4;
     public final static int TYPE_INTERFACE = 5;
+    public final static int TYPE_ENTITY_SEARCH = 6;
+    public final static int TYPE_ENTITY_VO = 7;
+    public final static int TYPE_ENTITY_REQUEST_DTO = 8;
+    public final static int TYPE_DAO_INTERFACE = 9;
+    public final static int TYPE_DAO_IMPL = 10;
 
     public static Configuration getInstance() {
         if (null == configuration) {

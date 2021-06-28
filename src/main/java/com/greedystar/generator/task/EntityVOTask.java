@@ -22,7 +22,7 @@ import java.util.Map;
  * @since 2018/4/20
  */
 @Slf4j
-public class EntityTask extends AbstractTask {
+public class EntityVOTask extends AbstractTask {
     /**
      * 业务表元数据
      */
@@ -32,9 +32,9 @@ public class EntityTask extends AbstractTask {
      */
     private Mode mode;
 
-    private static DataReaderUtil dataReaderUtil = Singleton.get(DataReaderUtil.class, "EntityTask");
+    private static DataReaderUtil dataReaderUtil = Singleton.get(DataReaderUtil.class, "EntityVOTask");
 
-    public EntityTask(Mode mode, AbstractInvoker invoker) {
+    public EntityVOTask(Mode mode, AbstractInvoker invoker) {
         this.mode = mode;
         this.invoker = invoker;
         if (Mode.ENTITY_MAIN.equals(mode)) {
@@ -56,18 +56,15 @@ public class EntityTask extends AbstractTask {
 //            log.debug(">>> {} 元数据 [{}]" , this.getClass().getName(), JSON.toJSONString(data, true));
         }
         // 生成Entity文件
-        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY, data,
-                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntity())),
-                String.format("%s.java", fileName));
-//        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_VO, data,
-//                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntityVO())),
-//                String.format("%sVO.java", fileName));
-//        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_SEARCH, data,
-//                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntitySearchDTO())),
-//                String.format("%sSearchDTO.java", fileName));
-//        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_REQUEST_DTO, data,
-//                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntityRequestDTO())),
-//                String.format("%sRequestDTO.java", fileName));
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_VO, data,
+                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntityVO())),
+                String.format("%sVO.java", fileName));
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_SEARCH, data,
+                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntitySearchDTO())),
+                String.format("%sSearchDTO.java", fileName));
+        FileUtil.generateToJava(FreemarkerConfigUtil.TYPE_ENTITY_REQUEST_DTO, data,
+                String.format("%s%s", filePath, StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getEntityRequestDTO())),
+                String.format("%sRequestDTO.java", fileName));
     }
 
     /**
@@ -199,18 +196,11 @@ public class EntityTask extends AbstractTask {
             if (info.isPrimaryKey()) {
                 if (ConfigUtil.getConfiguration().getIdStrategy() == null ||
                         ConfigUtil.getConfiguration().getIdStrategy() == IdStrategy.AUTO) {
-                    sb.append(Constant.SPACE_4)
-                            .append(String.format("@TableId(value = \"%s\", type = IdType.AUTO)\n", info.getColumnName()));
                 } else if (ConfigUtil.getConfiguration().getIdStrategy() == IdStrategy.UUID) {
-                    sb.append(Constant.SPACE_4)
-                            .append(String.format("@TableId(value = \"%s\", type = IdType.ASSIGN_UUID)\n", info.getColumnName()))
-                    ;
                 }
             } else {
                 sb.append(Constant.SPACE_4)
-                        .append(String.format("@ApiModelProperty(value=\"%s\", notes=\"%s\", required = %s)\n", info.getRemarks(), info.getIsUnique() ? "UniqueKey": "", info.getIsRequired() ? "true" : "false"))
-                        .append(Constant.SPACE_4)
-                        .append(String.format("@TableField(value = \"%s\")\n", info.getColumnName()));
+                        .append(String.format("@ApiModelProperty(value=\"%s\", notes=\"%s\", required = %s)\n", info.getRemarks(), info.getIsUnique() ? "UniqueKey": "", info.getIsRequired() ? "true" : "false"));
             }
         } else if (ConfigUtil.getConfiguration().isJpaEnable()) {
             if (info.isPrimaryKey()) {
