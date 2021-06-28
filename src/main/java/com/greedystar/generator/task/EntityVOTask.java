@@ -76,7 +76,8 @@ public class EntityVOTask extends AbstractTask {
     public String entityProperties(AbstractInvoker invoker) {
         StringBuilder sb = new StringBuilder();
         tableInfos.forEach(ForEachUtil.withIndex((info, index) -> {
-            if (info.getColumnName().equals(invoker.getForeignKey())) {
+            if (info.getColumnName().equals(invoker.getForeignKey()) || info.isPrimaryKey()) {
+                sb.append("\n");
                 return;
             }
             sb.append(index == 0 ? "" : Constant.SPACE_4);
@@ -196,6 +197,8 @@ public class EntityVOTask extends AbstractTask {
             if (info.isPrimaryKey()) {
                 if (ConfigUtil.getConfiguration().getIdStrategy() == null ||
                         ConfigUtil.getConfiguration().getIdStrategy() == IdStrategy.AUTO) {
+                    sb.append(Constant.SPACE_4)
+                            .append(String.format("@ApiModelProperty(value=\"%s\")\n", info.getRemarks()));
                 } else if (ConfigUtil.getConfiguration().getIdStrategy() == IdStrategy.UUID) {
                 }
             } else {

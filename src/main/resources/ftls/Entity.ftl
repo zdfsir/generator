@@ -28,7 +28,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="${Remarks}", description="")
+@ApiModel(value="${ClassName}", description="${Remarks} 实体类")
 </#if>
 <#if Configuration.mybatisPlusEnable>
 @TableName(value = "${TableName}")

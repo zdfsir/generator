@@ -28,7 +28,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="${Remarks}", description="")
+@ApiModel(value="${ClassName}VO", description="${Remarks} 视图")
 </#if>
 <#if Configuration.mybatisPlusEnable>
 <#elseif Configuration.jpaEnable>

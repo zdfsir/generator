@@ -30,7 +30,7 @@ import java.util.Map;
  * @date ${.now?date}
  */
 <#if Configuration.swaggerEnable>
-@Api(value = "/${ClassAttrName}", tags = "${ClassName}管理接口")
+@ApiOperation(value = "${ClassName}管理接口", tags = "")
 </#if>
 @RestController
 @RequestMapping(value = "/${ClassMappingName}")
@@ -44,6 +44,7 @@ public class ${ControllerClassName} {
     </#if>
     @SystemControllerLog(actionType = ActionTypeEnum.QUERY, roleType = RoleTypeEnum.ADMIN)
     @PostMapping(value = "/list")
+    @ResponseBody
     public Result<${ClassName}VO> list(@RequestBody(required = false) ${ClassName}SearchDTO searchDTO) {
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         List<${ClassName}VO> list = ${ServiceEntityName}.selectList(searchDTO);
@@ -58,6 +59,7 @@ public class ${ControllerClassName} {
     </#if>
     @SystemControllerLog(actionType = ActionTypeEnum.QUERY, roleType = RoleTypeEnum.ADMIN)
     @PostMapping(value = "/page")
+    @ResponseBody
     public Result<IPage<${ClassName}VO>> page(@RequestBody(required = false) PageSelect<${ClassName}SearchDTO> pageSelect) {
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         IPage<${ClassName}VO> page = ${ServiceEntityName}.selectPage(pageSelect);
@@ -72,6 +74,7 @@ public class ${ControllerClassName} {
 </#if>
     @SystemControllerLog(actionType = ActionTypeEnum.QUERY, roleType = RoleTypeEnum.ADMIN)
     @GetMapping(value = "/{id}")
+    @ResponseBody
     public Result<${ClassName}VO> get(@PathVariable("id") ${pkType} id) {
     <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         ${ClassName} ${ClassAttrName} = ${ServiceEntityName}.getById(id);
@@ -89,6 +92,7 @@ public class ${ControllerClassName} {
 </#if>
     @SystemControllerLog(actionType = ActionTypeEnum.QUERY, roleType = RoleTypeEnum.ADMIN)
     @GetMapping(value = "/{${item.propertyName}}")
+    @ResponseBody
     public Result<${ClassName}VO> getBy${item.propertyName?cap_first}(@PathVariable("${item.propertyName}") ${item.propertyType} ${item.propertyName}) {
         ${ClassName}VO vo = ${ServiceEntityName}.getBy${item.propertyName?cap_first}(${item.propertyName});
         return Result.success(vo);
@@ -101,6 +105,7 @@ public class ${ControllerClassName} {
     </#if>
     @SystemControllerLog(actionType = ActionTypeEnum.SAVE, roleType = RoleTypeEnum.ADMIN)
     @PostMapping(value = "")
+    @ResponseBody
     public Result<Boolean> save(@RequestBody ${ClassName}RequestDTO requestDTO) {
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         boolean status = ${ServiceEntityName}.save(requestDTO);

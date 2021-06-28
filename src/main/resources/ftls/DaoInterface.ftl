@@ -56,6 +56,14 @@ public interface ${ClassName}Dao {
      */
     ${ClassName}VO getBy${item.propertyName?cap_first}(${item.propertyType} ${item.propertyName});
 
+    /**
+     * 检查唯一键${item.propertyName}是否已存在于${Remarks}
+     *
+     * @param ${item.propertyName}
+     * @return boolean
+     */
+    boolean check${item.propertyName?cap_first}IsExist(${item.propertyType} ${item.propertyName});
+
 </#list>
     /**
      * 筛选${Remarks}

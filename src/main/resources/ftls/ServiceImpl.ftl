@@ -96,6 +96,7 @@ public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${Class
         QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper();
         queryWrapper.setEntity(ObjectTools.toEntity(pageSelect.getSearchDTO(), ${ClassName}.class));
         IPage<${ClassName}VO> iPageVO = ${ClassAttrName}Dao.selectPage(new Page<>(pageSelect.getCurPage(), pageSelect.getPageSize()), queryWrapper);
+        iPageVO.setTotal(this.baseMapper.selectCount(queryWrapper));
         return iPageVO;
     }
 

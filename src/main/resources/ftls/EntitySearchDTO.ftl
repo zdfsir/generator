@@ -28,7 +28,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="${Remarks}", description="")
+@ApiModel(value="${ClassName}SearchDTO", description="${Remarks} 搜索请求对象")
 </#if>
 <#if Configuration.mybatisPlusEnable>
 <#elseif Configuration.jpaEnable>

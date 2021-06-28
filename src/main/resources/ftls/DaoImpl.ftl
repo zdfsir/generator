@@ -88,6 +88,20 @@ public class ${ClassName}DaoImpl implements ${ClassName}Dao {
         return ${ClassName?uncap_first}VO;
     }
 
+    /**
+     * 检查唯一键${item.propertyName}是否已存在于${Remarks}
+     *
+     * @param ${item.propertyName}
+     * @return boolean
+     */
+    @Override
+    public boolean check${item.propertyName?cap_first}IsExist(${item.propertyType} ${item.propertyName}) {
+        QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper<>();
+        queryWrapper.setEntity(new ${ClassName}().set${item.propertyName?cap_first}(${item.propertyName}));
+        ${ClassName} ${ClassName?uncap_first} = ${ClassAttrName}Mapper.selectOne(queryWrapper);
+        return null != ${ClassName?uncap_first};
+    }
+
     </#list>
     /**
      * 筛选${Remarks}
