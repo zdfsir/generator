@@ -11,8 +11,11 @@ import io.swagger.annotations.ApiOperation;
 </#if>
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.rzhkj.discovery.consumer.web.tools.JwtTools;
+import com.rzhkj.facade.base.base.dto.SignInAccountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.rzhkj.discovery.consumer.web.base.ctrl.BaseCtrl;
 import com.rzhkj.facade.base.base.enums.ActionTypeEnum;
 import com.rzhkj.facade.base.base.enums.RoleTypeEnum;
 import com.rzhkj.facade.base.base.result.Result;
@@ -34,7 +37,7 @@ import java.util.Map;
 </#if>
 @RestController
 @RequestMapping(value = "/${ClassMappingName}")
-public class ${ControllerClassName} {
+public class ${ControllerClassName} extends BaseCtrl {
 
     @DubboReference(version = "${r'${project.version}'}")
     private ${ServiceClassName} ${ServiceEntityName};
@@ -46,6 +49,7 @@ public class ${ControllerClassName} {
     @PostMapping(value = "/list")
     @ResponseBody
     public Result<${ClassName}VO> list(@RequestBody(required = false) ${ClassName}SearchDTO searchDTO) {
+        SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         List<${ClassName}VO> list = ${ServiceEntityName}.selectList(searchDTO);
         <#else><#-- mybatis或jpa模式 -->
@@ -61,6 +65,7 @@ public class ${ControllerClassName} {
     @PostMapping(value = "/page")
     @ResponseBody
     public Result<IPage<${ClassName}VO>> page(@RequestBody(required = false) PageSelect<${ClassName}SearchDTO> pageSelect) {
+        SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         IPage<${ClassName}VO> page = ${ServiceEntityName}.selectPage(pageSelect);
         <#else><#-- mybatis或jpa模式 -->
@@ -76,6 +81,7 @@ public class ${ControllerClassName} {
     @GetMapping(value = "/{id}")
     @ResponseBody
     public Result<${ClassName}VO> get(@PathVariable("id") ${pkType} id) {
+    SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
     <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         ${ClassName} ${ClassAttrName} = ${ServiceEntityName}.getById(id);
     <#else><#-- mybatis或jpa模式 -->
@@ -91,9 +97,10 @@ public class ${ControllerClassName} {
     @ApiOperation(value = "根据唯一键${item.propertyName}查询一个${Remarks}", notes = "")
 </#if>
     @SystemControllerLog(actionType = ActionTypeEnum.QUERY, roleType = RoleTypeEnum.ADMIN)
-    @GetMapping(value = "/{${item.propertyName}}")
+    @GetMapping(value = "/${item.propertyName}/{${item.propertyName}}")
     @ResponseBody
     public Result<${ClassName}VO> getBy${item.propertyName?cap_first}(@PathVariable("${item.propertyName}") ${item.propertyType} ${item.propertyName}) {
+        SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
         ${ClassName}VO vo = ${ServiceEntityName}.getBy${item.propertyName?cap_first}(${item.propertyName});
         return Result.success(vo);
     }
@@ -107,6 +114,7 @@ public class ${ControllerClassName} {
     @PostMapping(value = "")
     @ResponseBody
     public Result<Boolean> save(@RequestBody ${ClassName}RequestDTO requestDTO) {
+        SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         boolean status = ${ServiceEntityName}.save(requestDTO);
         <#else><#-- mybatis或jpa模式 -->
@@ -121,6 +129,7 @@ public class ${ControllerClassName} {
     @SystemControllerLog(actionType = ActionTypeEnum.DEL, roleType = RoleTypeEnum.ADMIN)
     @DeleteMapping(value = "")
     public Result<Boolean> delete(@RequestBody ${ClassName}RequestDTO requestDTO) {
+        SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
     <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         boolean status = ${ServiceEntityName}.delete(requestDTO);
     <#else><#-- mybatis或jpa模式 -->

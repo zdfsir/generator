@@ -1,9 +1,11 @@
+# 项目包名
+package-name: com.tsw2.cloudnest.wallet
 # 连接数据库
 db:
   schema: cloudnest
-  url: jdbc:mysql://192.168.10.110:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-  username: root
-  password: mysqladmin
+  url: jdbc:mysql://159.138.1.147:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+  username: cloudnest
+  password: cloudnest
 # 生成文件对应路径
 path:
   controller: ctrl
@@ -30,8 +32,6 @@ name:
 
 # 代码作者
 author: borong
-# 项目包名
-package-name: com.tsw2.cloudnest.system
 # 数据类型转换器
 convertor: com.greedystar.generator.convertor.DefaultConvertor
 swagger-enable: true

@@ -30,7 +30,7 @@ public interface ${ClassName}Dao {
      * @param ${ClassName?uncap_first}
      * @return boolean
      */
-    boolean save(${ClassName} ${ClassName?uncap_first});
+    boolean insert(${ClassName} ${ClassName?uncap_first});
 
     /**
      * 修改${Remarks}

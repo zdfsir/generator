@@ -16,13 +16,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 <#else>
 import java.io.Serializable;
 </#if>
+import cn.hutool.core.collection.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.rzhkj.base.core.tools.ObjectTools;
+import com.rzhkj.discovery.core.tools.FunctionCheckUtil;
 import com.rzhkj.facade.base.mybatisplus.PageSelect;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 
-import java.io.Serializable;
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,6 +36,9 @@ import java.util.List;
 @DubboService
 <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
 public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${ClassName}> ${Implements} {
+
+    @Resource
+    private FunctionCheckUtil functionCheck;
 
     @Autowired
     private ${ClassName}Dao ${ClassAttrName}Dao;
@@ -54,7 +59,7 @@ public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${Class
         ${ClassName?uncap_first}.set${item.propertyName?cap_first}(now);
     </#if>
 </#list>
-        return ${ClassAttrName}Dao.save(${ClassName?uncap_first});
+        return ${ClassAttrName}Dao.insert(${ClassName?uncap_first});
     }
 
 <#list uniqueColumnList as item>
@@ -79,9 +84,13 @@ public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${Class
      */
     @Override
     public List<${ClassName}VO> selectList(${ClassName}SearchDTO searchDTO) {
-        QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper();
-        queryWrapper.setEntity(ObjectTools.toEntity(searchDTO, ${ClassName}.class));
+        QueryWrapper<${ClassName}> queryWrapper = this.getQueryWrapper(searchDTO);
         List<${ClassName}VO> listVO = ${ClassAttrName}Dao.selectList(queryWrapper);
+        if (CollectionUtil.isNotEmpty(listVO)) {
+            listVO.parallelStream().forEach(o -> {
+                this.setExtend(o);
+            });
+        }
         return listVO;
     }
 
@@ -93,11 +102,38 @@ public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${Class
      */
     @Override
     public IPage<${ClassName}VO> selectPage(PageSelect<${ClassName}SearchDTO> pageSelect) {
-        QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper();
-        queryWrapper.setEntity(ObjectTools.toEntity(pageSelect.getSearchDTO(), ${ClassName}.class));
+        ${ClassName}SearchDTO searchDTO = pageSelect.getSearchDTO();
+        QueryWrapper<${ClassName}> queryWrapper = this.getQueryWrapper(searchDTO);
         IPage<${ClassName}VO> iPageVO = ${ClassAttrName}Dao.selectPage(new Page<>(pageSelect.getCurPage(), pageSelect.getPageSize()), queryWrapper);
         iPageVO.setTotal(this.baseMapper.selectCount(queryWrapper));
+        if (CollectionUtil.isNotEmpty(iPageVO.getRecords())) {
+            iPageVO.getRecords().parallelStream().forEach(o -> {
+                this.setExtend(o);
+            });
+        }
         return iPageVO;
+    }
+
+
+    /**
+    * 装箱扩展的查询条件
+    *
+    * @param searchDTO
+    * @return
+    */
+    private QueryWrapper<${ClassName}> getQueryWrapper(${ClassName}SearchDTO searchDTO) {
+        QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper();
+        ${ClassName} entity = ObjectTools.toEntity(searchDTO, ${ClassName}.class);
+        queryWrapper.setEntity(entity);
+        return queryWrapper;
+    }
+
+    /**
+    * 装箱扩展参数
+    *
+    * @param vo
+    */
+    private void setExtend(${ClassName}VO vo) {
     }
 
     /**

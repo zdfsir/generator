@@ -45,7 +45,7 @@ public class ${ClassName}DaoImpl implements ${ClassName}Dao {
      * @return boolean
      */
     @Override
-    public boolean save(${ClassName} ${ClassName?uncap_first}) {
+    public boolean insert(${ClassName} ${ClassName?uncap_first}) {
         if (null == ${ClassName?uncap_first}) {
             return false;
         }
