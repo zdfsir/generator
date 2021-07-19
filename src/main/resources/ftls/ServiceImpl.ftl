@@ -12,7 +12,8 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.base.MPJBaseServiceImpl;
+import com.github.yulichang.query.MPJQueryWrapper;
 <#else>
 import java.io.Serializable;
 </#if>
@@ -35,7 +36,7 @@ import java.util.List;
 @Slf4j
 @DubboService
 <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${ClassName}> ${Implements} {
+public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, ${ClassName}> ${Implements} {
 
     @Resource
     private FunctionCheckUtil functionCheck;
@@ -86,11 +87,21 @@ public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${Class
     public List<${ClassName}VO> selectList(${ClassName}SearchDTO searchDTO) {
         QueryWrapper<${ClassName}> queryWrapper = this.getQueryWrapper(searchDTO);
         List<${ClassName}VO> listVO = ${ClassAttrName}Dao.selectList(queryWrapper);
-        if (CollectionUtil.isNotEmpty(listVO)) {
-            listVO.parallelStream().forEach(o -> {
-                this.setExtend(o);
-            });
-        }
+        this.setExtend(listVO);
+        return listVO;
+    }
+
+    /**
+     * 筛选${Remarks}
+     *
+     * @param searchDTO
+     * @return List<${ClassName}VO>
+     */
+    @Override
+    public List<${ClassName}VO> selectJoinList(${ClassName}SearchDTO searchDTO) {
+        MPJQueryWrapper<${ClassName}> queryWrapper = this.getMPJQueryWrapper(searchDTO);
+        List<${ClassName}VO> listVO = ${ClassAttrName}Dao.selectList(queryWrapper);
+        this.setExtend(listVO);
         return listVO;
     }
 
@@ -105,22 +116,32 @@ public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${Class
         ${ClassName}SearchDTO searchDTO = pageSelect.getSearchDTO();
         QueryWrapper<${ClassName}> queryWrapper = this.getQueryWrapper(searchDTO);
         IPage<${ClassName}VO> iPageVO = ${ClassAttrName}Dao.selectPage(new Page<>(pageSelect.getCurPage(), pageSelect.getPageSize()), queryWrapper);
-        iPageVO.setTotal(this.baseMapper.selectCount(queryWrapper));
-        if (CollectionUtil.isNotEmpty(iPageVO.getRecords())) {
-            iPageVO.getRecords().parallelStream().forEach(o -> {
-                this.setExtend(o);
-            });
-        }
+        this.setExtend(iPageVO.getRecords());
+        return iPageVO;
+    }
+
+    /**
+     * 分页筛选${Remarks}
+     *
+     * @param pageSelect
+     * @return IPage<${ClassName}VO>
+     */
+    @Override
+    public IPage<${ClassName}VO> selectJoinPage(PageSelect<${ClassName}SearchDTO> pageSelect) {
+        ${ClassName}SearchDTO searchDTO = pageSelect.getSearchDTO();
+        MPJQueryWrapper<${ClassName}> queryWrapper = this.getMPJQueryWrapper(searchDTO);
+        IPage<${ClassName}VO> iPageVO = ${ClassAttrName}Dao.selectPage(new Page<>(pageSelect.getCurPage(), pageSelect.getPageSize()), queryWrapper);
+        this.setExtend(iPageVO.getRecords());
         return iPageVO;
     }
 
 
     /**
-    * 装箱扩展的查询条件
-    *
-    * @param searchDTO
-    * @return
-    */
+     * 装箱扩展的查询条件
+     *
+     * @param searchDTO
+     * @return
+     */
     private QueryWrapper<${ClassName}> getQueryWrapper(${ClassName}SearchDTO searchDTO) {
         QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper();
         ${ClassName} entity = ObjectTools.toEntity(searchDTO, ${ClassName}.class);
@@ -129,11 +150,30 @@ public class ${ServiceClassName} extends ServiceImpl<${MapperClassName}, ${Class
     }
 
     /**
-    * 装箱扩展参数
-    *
-    * @param vo
-    */
-    private void setExtend(${ClassName}VO vo) {
+     * 装箱扩展的查询条件
+     *
+     * @param searchDTO
+     * @return
+     */
+    private MPJQueryWrapper<${ClassName}> getMPJQueryWrapper(${ClassName}SearchDTO searchDTO) {
+        MPJQueryWrapper<${ClassName}> queryWrapper = new MPJQueryWrapper();
+        ${ClassName} entity = ObjectTools.toEntity(searchDTO, ${ClassName}.class);
+        queryWrapper.setEntity(entity);
+        return queryWrapper;
+    }
+
+    /**
+     * 装箱扩展参数
+     *
+     * @param vo
+     */
+    private void setExtend(List<${ClassName}VO> list) {
+        if (CollectionUtil.isEmpty(list)) {
+            return;
+        }
+        list.parallelStream().forEach(o -> {
+
+        });
     }
 
     /**

@@ -3,7 +3,7 @@ package ${Configuration.packageName}.${Configuration.path.mapper};
 import ${Configuration.packageName}.${Configuration.path.entity}.${ClassName};
 <#if Configuration.mybatisPlusEnable>
 import org.apache.ibatis.annotations.Mapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.yulichang.base.MPJBaseMapper;
 <#elseif Configuration.jpaEnable>
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
 @Mapper
-public interface ${MapperClassName} extends BaseMapper<${ClassName}> {
+public interface ${MapperClassName} extends MPJBaseMapper<${ClassName}> {
 
 }
 <#elseif Configuration.jpaEnable><#-- jpa模式 -->

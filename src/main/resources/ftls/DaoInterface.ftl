@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rzhkj.facade.base.mybatisplus.PageSelect;
+import com.github.yulichang.query.MPJQueryWrapper;
 <#else>
 import java.io.Serializable;
 </#if>
@@ -74,6 +75,14 @@ public interface ${ClassName}Dao {
     List<${ClassName}VO> selectList(QueryWrapper<${ClassName}> queryWrapper);
 
     /**
+     * 筛选${Remarks}
+     *
+     * @param queryWrapper
+     * @return List<${ClassName}VO>
+     */
+    List<${ClassName}VO> selectList(MPJQueryWrapper<${ClassName}> queryWrapper);
+
+    /**
      * 分页筛选${Remarks}
      *
      * @param page
@@ -81,6 +90,15 @@ public interface ${ClassName}Dao {
      * @return IPage<${ClassName}VO>
      */
     IPage<${ClassName}VO> selectPage(Page<${ClassName}> page, QueryWrapper<${ClassName}> queryWrapper);
+
+    /**
+     * 分页筛选${Remarks}
+     *
+     * @param page
+     * @param queryWrapper
+     * @return IPage<${ClassName}VO>
+     */
+    IPage<${ClassName}VO> selectPage(Page<${ClassName}> page, MPJQueryWrapper<${ClassName}> queryWrapper);
 }
 <#else><#-- mybatis或jpa模式 -->
 public interface ${InterfaceClassName} {

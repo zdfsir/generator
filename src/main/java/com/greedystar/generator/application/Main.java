@@ -22,9 +22,12 @@ public class Main {
 
     public static void single() {
         Map<String, String> invokerMap = new HashMap<>();
-
+        {
+            // 云巢
 //        invokerMap.put("account_admin", "AccountAdmin");
 //        invokerMap.put("account_group", "AccountGroup");
+//        invokerMap.put("account_group_partner", "AccountGroupPartner");
+//        invokerMap.put("account_group_partner_history", "AccountGroupPartnerHistory");
 //        invokerMap.put("account_personal", "AccountPersonal");
 //        invokerMap.put("account_referrer_relation", "AccountReferrerRelation");
 //        invokerMap.put("account_referrer_relation_history", "AccountReferrerRelationHistory");
@@ -53,8 +56,14 @@ public class Main {
 //        invokerMap.put("computers_node_record_assign", "");
 //        invokerMap.put("computers_node_record_renewal", "");
 
-        invokerMap.put("account_currency", "AccountCurrency");
-//        invokerMap.put("account_currency_node_history", "AccountCurrencyNodeHistory");
+//        invokerMap.put("account_currency", "AccountCurrency");
+        invokerMap.put("account_currency_node_history", "AccountCurrencyNodeHistory");
+        }
+        {
+            // 庞帝
+//            invokerMap.put("classroom", "Classroom");
+//            invokerMap.put("classroom_content", "ClassroomContent");
+        }
 
         invokerMap.forEach(new BiConsumer<String, String>() {
             @Override

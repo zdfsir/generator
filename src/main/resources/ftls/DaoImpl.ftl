@@ -12,13 +12,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.query.MPJQueryWrapper;
 <#else>
 import java.io.Serializable;
 </#if>
 import org.springframework.beans.factory.annotation.Autowired;
 import com.rzhkj.base.core.tools.ObjectTools;
-import com.rzhkj.facade.base.mybatisplus.PageSelect;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -117,6 +116,18 @@ public class ${ClassName}DaoImpl implements ${ClassName}Dao {
     }
 
     /**
+     * 筛选${Remarks}
+     *
+     * @param queryWrapper
+     * @return List<${ClassName}VO>
+     */
+    @Override
+    public List<${ClassName}VO> selectList(MPJQueryWrapper<${ClassName}> queryWrapper) {
+        List<${ClassName}VO> listVO = ${ClassAttrName}Mapper.selectJoinList(${ClassName}VO.class, queryWrapper);
+        return listVO;
+    }
+
+    /**
      * 分页筛选${Remarks}
      *
      * @param page
@@ -127,6 +138,19 @@ public class ${ClassName}DaoImpl implements ${ClassName}Dao {
     public IPage<${ClassName}VO> selectPage(Page<${ClassName}> page, QueryWrapper<${ClassName}> queryWrapper) {
         IPage<${ClassName}> iPage = ${ClassAttrName}Mapper.selectPage(page, queryWrapper);
         IPage<${ClassName}VO> iPageVO = iPage.convert(o -> ObjectTools.toVo(o, ${ClassName}VO.class));
+        return iPageVO;
+    }
+
+    /**
+     * 分页筛选${Remarks}
+     *
+     * @param page
+     * @param queryWrapper
+     * @return IPage<${ClassName}VO>
+     */
+    @Override
+    public IPage<${ClassName}VO> selectPage(Page<${ClassName}> page, MPJQueryWrapper<${ClassName}> queryWrapper) {
+        IPage<${ClassName}VO> iPageVO = ${ClassAttrName}Mapper.selectJoinPage(page, ${ClassName}VO.class, queryWrapper);
         return iPageVO;
     }
 }

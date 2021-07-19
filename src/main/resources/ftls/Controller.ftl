@@ -55,7 +55,7 @@ public class ${ControllerClassName} extends BaseCtrl {
         <#else><#-- mybatis或jpa模式 -->
         List<${ClassName}> list = ${ServiceEntityName}.findAll();
         </#if>
-        return Result.success(list);
+        return Result.list(list);
     }
 
     <#if Configuration.swaggerEnable>
@@ -70,7 +70,7 @@ public class ${ControllerClassName} extends BaseCtrl {
         IPage<${ClassName}VO> page = ${ServiceEntityName}.selectPage(pageSelect);
         <#else><#-- mybatis或jpa模式 -->
         </#if>
-        return Result.success(page);
+        return Result.page(page);
     }
 
 <#if uniqueColumnList?size = 0>
@@ -88,7 +88,7 @@ public class ${ControllerClassName} extends BaseCtrl {
         ${ClassName} ${ClassAttrName} = ${ServiceEntityName}.get(id);
     </#if>
         ${ClassName}VO vo = BeanUtil.copyProperties(${ClassAttrName}, ${ClassName}VO.class);
-        return Result.success(vo);
+        return Result.data(vo);
     }
 
 <#else>
@@ -102,7 +102,7 @@ public class ${ControllerClassName} extends BaseCtrl {
     public Result<${ClassName}VO> getBy${item.propertyName?cap_first}(@PathVariable("${item.propertyName}") ${item.propertyType} ${item.propertyName}) {
         SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
         ${ClassName}VO vo = ${ServiceEntityName}.getBy${item.propertyName?cap_first}(${item.propertyName});
-        return Result.success(vo);
+        return Result.data(vo);
     }
 
 </#list>
@@ -120,7 +120,7 @@ public class ${ControllerClassName} extends BaseCtrl {
         <#else><#-- mybatis或jpa模式 -->
         ${ServiceEntityName}.insert(${ClassAttrName});
         </#if>
-        return Result.success(status);
+        return Result.data(status);
     }
 
     <#if Configuration.swaggerEnable>
@@ -135,7 +135,6 @@ public class ${ControllerClassName} extends BaseCtrl {
     <#else><#-- mybatis或jpa模式 -->
         ${ServiceEntityName}.delete(${ClassAttrName});
     </#if>
-        return Result.success(status);
+        return Result.data(status);
     }
-
 }

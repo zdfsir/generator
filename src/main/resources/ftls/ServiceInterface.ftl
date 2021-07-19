@@ -6,7 +6,7 @@ import ${Configuration.packageName}.${Configuration.path.entitySearchDTO}.${Clas
 import ${Configuration.packageName}.${Configuration.path.entityRequestDTO}.${ClassName}RequestDTO;
 <#if Configuration.mybatisPlusEnable>
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.yulichang.base.MPJBaseService;
 import com.rzhkj.facade.base.mybatisplus.PageSelect;
 <#else>
 import java.io.Serializable;
@@ -19,7 +19,7 @@ import java.util.List;
  * @date ${.now?date}
  */
 <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-public interface ${InterfaceClassName} extends IService<${ClassName}> {
+public interface ${InterfaceClassName} extends MPJBaseService<${ClassName}> {
 
     /**
      * 保存${Remarks}
@@ -48,12 +48,28 @@ public interface ${InterfaceClassName} extends IService<${ClassName}> {
     List<${ClassName}VO> selectList(${ClassName}SearchDTO searchDTO);
 
     /**
+     * 筛选${Remarks}
+     *
+     * @param searchDTO
+     * @return List<${ClassName}VO>
+     */
+    List<${ClassName}VO> selectJoinList(${ClassName}SearchDTO searchDTO);
+
+    /**
      * 分页筛选${Remarks}
      *
      * @param pageSelect
      * @return IPage<${ClassName}VO>
      */
     IPage<${ClassName}VO> selectPage(PageSelect<${ClassName}SearchDTO> pageSelect);
+
+    /**
+     * 分页筛选${Remarks}
+     *
+     * @param pageSelect
+     * @return IPage<${ClassName}VO>
+     */
+    IPage<${ClassName}VO> selectJoinPage(PageSelect<${ClassName}SearchDTO> pageSelect);
 
     /**
      * 删除${Remarks}
