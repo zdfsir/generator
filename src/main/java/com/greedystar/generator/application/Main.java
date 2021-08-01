@@ -24,6 +24,7 @@ public class Main {
         Map<String, String> invokerMap = new HashMap<>();
         {
             // 云巢
+//        invokerMap.put("account", "Account");
 //        invokerMap.put("account_admin", "AccountAdmin");
 //        invokerMap.put("account_group", "AccountGroup");
 //        invokerMap.put("account_group_partner", "AccountGroupPartner");
@@ -57,12 +58,25 @@ public class Main {
 //        invokerMap.put("computers_node_record_renewal", "");
 
 //        invokerMap.put("account_currency", "AccountCurrency");
-        invokerMap.put("account_currency_node_history", "AccountCurrencyNodeHistory");
+//        invokerMap.put("account_currency_node_history", "AccountCurrencyNodeHistory");
         }
         {
             // 庞帝
 //            invokerMap.put("classroom", "Classroom");
 //            invokerMap.put("classroom_content", "ClassroomContent");
+        }
+        {
+            // 服务石化
+//            invokerMap.put("account", "Account");
+//            invokerMap.put("account_admin", "AccountAdmin");
+//            invokerMap.put("account_personal", "AccountPersonal");
+//            invokerMap.put("account_role_relation", "AccountRoleRelation");
+
+            invokerMap.put("company", "Company");
+//            invokerMap.put("company_admin", "CompanyAdmin");
+//            invokerMap.put("company_shop", "CompanyShop");
+//            invokerMap.put("company_shop_cross", "CompanyShopCross");
+//            invokerMap.put("company_shop_staff", "CompanyShopStaff");
         }
 
         invokerMap.forEach(new BiConsumer<String, String>() {

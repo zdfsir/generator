@@ -165,7 +165,7 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
     /**
      * 装箱扩展参数
      *
-     * @param vo
+     * @param list
      */
     private void setExtend(List<${ClassName}VO> list) {
         if (CollectionUtil.isEmpty(list)) {
