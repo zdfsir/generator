@@ -72,7 +72,9 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
      */
     @Override
     public ${ClassName}VO getBy${item.propertyName?cap_first}(${item.propertyType} ${item.propertyName}) {
-        return ${ClassAttrName}Dao.getBy${item.propertyName?cap_first}(${item.propertyName});
+        ${ClassName}VO vo = ${ClassAttrName}Dao.getBy${item.propertyName?cap_first}(${item.propertyName});
+        this.setVO(vo);
+        return vo;
     }
 
 </#list>
@@ -172,8 +174,16 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
             return;
         }
         list.parallelStream().forEach(o -> {
-
+            this.setVO(o);
         });
+    }
+
+    /**
+     * 设置VO对象
+     *
+     * @param vo
+     */
+    private void setVO(${ClassName}VO vo) {
     }
 
     /**
