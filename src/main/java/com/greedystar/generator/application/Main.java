@@ -23,6 +23,19 @@ public class Main {
     public static void single() {
         Map<String, String> invokerMap = new HashMap<>();
         {
+            // 庞帝
+//            invokerMap.put("classroom", "Classroom");
+//            invokerMap.put("classroom_content", "ClassroomContent");
+//            invokerMap.put("message_classroom", "MessageClassroom");
+//            invokerMap.put("account", "Account");
+//            invokerMap.put("account_info", "AccountInfo");
+//            invokerMap.put("classroom_tutor_record", "ClassroomTutorRecord");
+//            invokerMap.put("classroom_student_record", "ClassroomStudentRecord");
+//            invokerMap.put("orders", "Orders");
+//            invokerMap.put("classroom_history", "ClassroomHistory");
+            invokerMap.put("finance_token_account_record", "FinanceTokenAccountRecord");
+        }
+        {
             // 云巢
 //        invokerMap.put("account", "Account");
 //        invokerMap.put("account_admin", "AccountAdmin");
@@ -59,24 +72,6 @@ public class Main {
 
 //        invokerMap.put("account_currency", "AccountCurrency");
 //        invokerMap.put("account_currency_node_history", "AccountCurrencyNodeHistory");
-        }
-        {
-            // 庞帝
-//            invokerMap.put("classroom", "Classroom");
-//            invokerMap.put("classroom_content", "ClassroomContent");
-        }
-        {
-            // 服务石化
-//            invokerMap.put("account", "Account");
-//            invokerMap.put("account_admin", "AccountAdmin");
-//            invokerMap.put("account_personal", "AccountPersonal");
-//            invokerMap.put("account_role_relation", "AccountRoleRelation");
-
-            invokerMap.put("company", "Company");
-//            invokerMap.put("company_admin", "CompanyAdmin");
-//            invokerMap.put("company_shop", "CompanyShop");
-//            invokerMap.put("company_shop_cross", "CompanyShopCross");
-//            invokerMap.put("company_shop_staff", "CompanyShopStaff");
         }
 
         invokerMap.forEach(new BiConsumer<String, String>() {

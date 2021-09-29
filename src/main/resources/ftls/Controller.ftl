@@ -113,14 +113,14 @@ public class ${ControllerClassName} extends BaseCtrl {
     @SystemControllerLog(actionType = ActionTypeEnum.SAVE, roleType = RoleTypeEnum.ADMIN)
     @PostMapping(value = "")
     @ResponseBody
-    public Result<Boolean> save(@RequestBody ${ClassName}RequestDTO requestDTO) {
+    public Result<${ClassName}VO> save(@RequestBody ${ClassName}RequestDTO requestDTO) {
         SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-        boolean status = ${ServiceEntityName}.save(requestDTO);
+        ${ClassName}VO vo = ${ServiceEntityName}.save(requestDTO);
         <#else><#-- mybatis或jpa模式 -->
         ${ServiceEntityName}.insert(${ClassAttrName});
         </#if>
-        return Result.data(status);
+        return Result.data(vo);
     }
 
     <#if Configuration.swaggerEnable>

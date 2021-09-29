@@ -27,7 +27,7 @@ public interface ${InterfaceClassName} extends MPJBaseService<${ClassName}> {
      * @param requestDTO
      * @return boolean
      */
-    boolean save(${ClassName}RequestDTO requestDTO);
+    ${ClassName}VO save(${ClassName}RequestDTO requestDTO);
 
 <#list uniqueColumnList as item>
     /**

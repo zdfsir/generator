@@ -80,10 +80,10 @@ public class ${ClassName}DaoImpl implements ${ClassName}Dao {
         QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper<>();
         queryWrapper.setEntity(new ${ClassName}().set${item.propertyName?cap_first}(${item.propertyName}));
         ${ClassName} ${ClassName?uncap_first} = ${ClassAttrName}Mapper.selectOne(queryWrapper);
-        ${ClassName}VO ${ClassName?uncap_first}VO = null;
-        if (null != ${ClassName?uncap_first}) {
-            ${ClassName?uncap_first}VO = ObjectTools.toVo(${ClassName?uncap_first}, ${ClassName}VO.class);
+        if (null == ${ClassName?uncap_first}) {
+            return null;
         }
+        ${ClassName}VO ${ClassName?uncap_first}VO = ObjectTools.toVo(${ClassName?uncap_first}, ${ClassName}VO.class);
         return ${ClassName?uncap_first}VO;
     }
 

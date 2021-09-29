@@ -51,7 +51,7 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
      * @return
      */
     @Override
-    public boolean save(${ClassName}RequestDTO requestDTO) {
+    public ${ClassName}VO save(${ClassName}RequestDTO requestDTO) {
         ${ClassName} ${ClassName?uncap_first} = BeanUtil.copyProperties(requestDTO, ${ClassName}.class);
         LocalDateTime now = LocalDateTime.now();
 <#list dateTimeColumnList as item>
@@ -60,7 +60,9 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
         ${ClassName?uncap_first}.set${item.propertyName?cap_first}(now);
     </#if>
 </#list>
-        return ${ClassAttrName}Dao.insert(${ClassName?uncap_first});
+        ${ClassAttrName}Dao.insert(${ClassName?uncap_first});
+        ${ClassName}VO vo = BeanUtil.copyProperties(${ClassName?uncap_first}, ${ClassName}VO.class);
+        return vo;
     }
 
 <#list uniqueColumnList as item>
@@ -184,6 +186,9 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
      * @param vo
      */
     private void setVO(${ClassName}VO vo) {
+        if (null == vo) {
+            return;
+        }
     }
 
     /**
