@@ -1,22 +1,22 @@
 # 项目包名
 #package-name: com.tsw2.cloudnest.nodes_currency
-package-name: com.ponddy.finance
-#package-name: com.petroleum.fwsh.company
+package-name: com.ponddy.classroom
+#package-name: com.rzhkj.nt.site
 # 连接数据库
 db:
+#  schema: nt
+#  url: jdbc:mysql://192.168.10.220:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#  username: root
+#  password: mysqladmin
 #  schema: cloudnest
 #  url: jdbc:mysql://159.138.1.147:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
 #  username: cloudnest
 #  password: cloudnest
   schema: ponddytutors-2.0
 #  schema: im
-  url: jdbc:mysql://192.168.10.250:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+  url: jdbc:mysql://192.168.1.250:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   username: root
   password: mysqladmin
-#    schema: petroleum-fwsh
-#    url: jdbc:mysql://192.168.10.220:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-#    username: root
-#    password: mysqladmin
 # 生成文件对应路径
 path:
   controller: ctrl

@@ -75,7 +75,7 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
     @Override
     public ${ClassName}VO getBy${item.propertyName?cap_first}(${item.propertyType} ${item.propertyName}) {
         ${ClassName}VO vo = ${ClassAttrName}Dao.getBy${item.propertyName?cap_first}(${item.propertyName});
-        this.setVO(vo);
+        this.setVO(vo, null);
         return vo;
     }
 
@@ -91,7 +91,7 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
     public List<${ClassName}VO> selectList(${ClassName}SearchDTO searchDTO) {
         QueryWrapper<${ClassName}> queryWrapper = this.getQueryWrapper(searchDTO);
         List<${ClassName}VO> listVO = ${ClassAttrName}Dao.selectList(queryWrapper);
-        this.setExtend(listVO);
+        this.setExtend(listVO, searchDTO);
         return listVO;
     }
 
@@ -105,7 +105,7 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
     public List<${ClassName}VO> selectJoinList(${ClassName}SearchDTO searchDTO) {
         MPJQueryWrapper<${ClassName}> queryWrapper = this.getMPJQueryWrapper(searchDTO);
         List<${ClassName}VO> listVO = ${ClassAttrName}Dao.selectList(queryWrapper);
-        this.setExtend(listVO);
+        this.setExtend(listVO, searchDTO);
         return listVO;
     }
 
@@ -120,7 +120,7 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
         ${ClassName}SearchDTO searchDTO = pageSelect.getSearchDTO();
         QueryWrapper<${ClassName}> queryWrapper = this.getQueryWrapper(searchDTO);
         IPage<${ClassName}VO> iPageVO = ${ClassAttrName}Dao.selectPage(new Page<>(pageSelect.getCurPage(), pageSelect.getPageSize()), queryWrapper);
-        this.setExtend(iPageVO.getRecords());
+        this.setExtend(iPageVO.getRecords(), searchDTO);
         return iPageVO;
     }
 
@@ -135,7 +135,7 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
         ${ClassName}SearchDTO searchDTO = pageSelect.getSearchDTO();
         MPJQueryWrapper<${ClassName}> queryWrapper = this.getMPJQueryWrapper(searchDTO);
         IPage<${ClassName}VO> iPageVO = ${ClassAttrName}Dao.selectPage(new Page<>(pageSelect.getCurPage(), pageSelect.getPageSize()), queryWrapper);
-        this.setExtend(iPageVO.getRecords());
+        this.setExtend(iPageVO.getRecords(), searchDTO);
         return iPageVO;
     }
 
@@ -150,6 +150,12 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
         QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper();
         ${ClassName} entity = ObjectTools.toEntity(searchDTO, ${ClassName}.class);
         queryWrapper.setEntity(entity);
+        /*
+        // 如果需要时间范围筛选，请解开注释完成配置
+        if (null != searchDTO.getDateTimeRange()) {
+            queryWrapper.lambda().between(${ClassName}::getCreateTime, searchDTO.getDateTimeRange().getBegin(), searchDTO.getDateTimeRange().getEnd());
+        }
+        */
         return queryWrapper;
     }
 
@@ -161,8 +167,13 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
      */
     private MPJQueryWrapper<${ClassName}> getMPJQueryWrapper(${ClassName}SearchDTO searchDTO) {
         MPJQueryWrapper<${ClassName}> queryWrapper = new MPJQueryWrapper();
-        ${ClassName} entity = ObjectTools.toEntity(searchDTO, ${ClassName}.class);
-        queryWrapper.setEntity(entity);
+        queryWrapper.selectAll(${ClassName}.class);
+        /*
+        // 如果需要时间范围筛选，请解开注释完成配置
+        if (null != searchDTO.getDateTimeRange()) {
+            queryWrapper.lambda().between(${ClassName}::getCreateTime, searchDTO.getDateTimeRange().getBegin(), searchDTO.getDateTimeRange().getEnd());
+        }
+        */
         return queryWrapper;
     }
 
@@ -171,13 +182,15 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
      *
      * @param list
      */
-    private void setExtend(List<${ClassName}VO> list) {
+    private void setExtend(List<${ClassName}VO> list, ${ClassName}SearchDTO searchDTO) {
         if (CollectionUtil.isEmpty(list)) {
             return;
         }
-        list.parallelStream().forEach(o -> {
-            this.setVO(o);
-        });
+        if (null != searchDTO && searchDTO.getSearchExtend()) {
+            list.parallelStream().forEach(o -> {
+                this.setVO(o, searchDTO);
+            });
+        }
     }
 
     /**
@@ -185,9 +198,13 @@ public class ${ServiceClassName} extends MPJBaseServiceImpl<${MapperClassName}, 
      *
      * @param vo
      */
-    private void setVO(${ClassName}VO vo) {
+    private void setVO(${ClassName}VO vo, ${ClassName}SearchDTO searchDTO) {
         if (null == vo) {
             return;
+        }
+
+        if (null != searchDTO && searchDTO.getSearchExtend()) {
+
         }
     }
 

@@ -12,13 +12,13 @@ import io.swagger.annotations.ApiOperation;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rzhkj.discovery.consumer.web.tools.JwtTools;
-import com.rzhkj.facade.base.base.dto.SignInAccountDTO;
+import com.rzhkj.facade.base.core.dto.SignInAccountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.rzhkj.discovery.consumer.web.base.ctrl.BaseCtrl;
-import com.rzhkj.facade.base.base.enums.ActionTypeEnum;
-import com.rzhkj.facade.base.base.enums.RoleTypeEnum;
-import com.rzhkj.facade.base.base.result.Result;
+import com.rzhkj.facade.base.core.enums.ActionTypeEnum;
+import com.rzhkj.facade.base.core.enums.RoleTypeEnum;
+import com.rzhkj.facade.base.core.result.Result;
 import com.rzhkj.facade.base.mybatisplus.PageSelect;
 import com.rzhkj.facade.base.syslog.annotation.SystemControllerLog;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -93,9 +93,9 @@ public class ${ControllerClassName} extends BaseCtrl {
 
 <#else>
 <#list uniqueColumnList as item>
-<#if Configuration.swaggerEnable>
+    <#if Configuration.swaggerEnable>
     @ApiOperation(value = "根据唯一键${item.propertyName}查询一个${Remarks}", notes = "")
-</#if>
+    </#if>
     @SystemControllerLog(actionType = ActionTypeEnum.QUERY, roleType = RoleTypeEnum.ADMIN)
     @GetMapping(value = "/${item.propertyName}/{${item.propertyName}}")
     @ResponseBody
@@ -105,8 +105,27 @@ public class ${ControllerClassName} extends BaseCtrl {
         return Result.data(vo);
     }
 
+    <#if Configuration.swaggerEnable>
+    @ApiOperation(value = "删除${Remarks}", notes = "")
+    </#if>
+    @SystemControllerLog(actionType = ActionTypeEnum.DEL, roleType = RoleTypeEnum.ADMIN)
+    @DeleteMapping(value = "/{${item.propertyName}}")
+    public Result<Boolean> delete(@PathVariable("${item.propertyName}") ${item.propertyType} ${item.propertyName}) {
+        SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
+        <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
+        boolean status = ${ServiceEntityName}.delete(
+                new ${ClassName}RequestDTO()
+                    .set${item.propertyName?cap_first}(${item.propertyName})
+                    .setSignInAccount(signInAccount)
+        );
+        <#else><#-- mybatis或jpa模式 -->
+        ${ServiceEntityName}.delete(${ClassAttrName});
+        </#if>
+        return Result.data(status);
+    }
 </#list>
 </#if>
+
     <#if Configuration.swaggerEnable>
     @ApiOperation(value = "保存${Remarks}", notes = "")
     </#if>
@@ -115,26 +134,12 @@ public class ${ControllerClassName} extends BaseCtrl {
     @ResponseBody
     public Result<${ClassName}VO> save(@RequestBody ${ClassName}RequestDTO requestDTO) {
         SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
+        requestDTO.setSignInAccount(signInAccount);
         <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
         ${ClassName}VO vo = ${ServiceEntityName}.save(requestDTO);
         <#else><#-- mybatis或jpa模式 -->
         ${ServiceEntityName}.insert(${ClassAttrName});
         </#if>
         return Result.data(vo);
-    }
-
-    <#if Configuration.swaggerEnable>
-    @ApiOperation(value = "删除${Remarks}", notes = "")
-    </#if>
-    @SystemControllerLog(actionType = ActionTypeEnum.DEL, roleType = RoleTypeEnum.ADMIN)
-    @DeleteMapping(value = "")
-    public Result<Boolean> delete(@RequestBody ${ClassName}RequestDTO requestDTO) {
-        SignInAccountDTO signInAccount = JwtTools.decodeTokenToAccount(request);
-    <#if Configuration.mybatisPlusEnable><#-- mybatis-plus模式 -->
-        boolean status = ${ServiceEntityName}.delete(requestDTO);
-    <#else><#-- mybatis或jpa模式 -->
-        ${ServiceEntityName}.delete(${ClassAttrName});
-    </#if>
-        return Result.data(status);
     }
 }

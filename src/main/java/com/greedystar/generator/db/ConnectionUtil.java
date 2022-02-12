@@ -199,9 +199,9 @@ public class ConnectionUtil {
         int i = 1;
         while (columnResultSet.next()) {
             int columnType = columnResultSet.getType();
-            if (log.isDebugEnabled()) {
-                log.debug(">>> 列遍历：{} [{}] -> type: {}", i, columnResultSet.getObject(i), columnType);
-            }
+//            if (log.isDebugEnabled()) {
+//                log.debug(">>> 列遍历：{} [{}] -> type: {}", i, columnResultSet.getObject(i), columnType);
+//            }
             boolean isPrimaryKey;
             if (columnResultSet.getString("COLUMN_NAME").equals(primaryKey)) {
                 isPrimaryKey = true;

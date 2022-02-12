@@ -6,17 +6,16 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 </#if>
 <#if Configuration.mybatisPlusEnable>
-import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 <#elseif Configuration.jpaEnable>
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 </#if>
+import com.rzhkj.facade.base.core.dto.SignInAccountDTO;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  * ${Remarks}
@@ -38,4 +37,7 @@ public class ${ClassName}RequestDTO implements Serializable {
     ${Properties}
 
     ${Methods}
+
+    @ApiModelProperty(value="当前登录操作人", notes="", required = true, hidden = true)
+    private SignInAccountDTO signInAccount;
 }

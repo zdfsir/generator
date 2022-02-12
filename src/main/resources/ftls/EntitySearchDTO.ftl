@@ -1,22 +1,20 @@
 package ${Configuration.packageName}.${Configuration.path.entitySearchDTO};
 
-<#if Configuration.lombokEnable>
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-</#if>
+import com.rzhkj.base.core.dto.SearchDTO;
 <#if Configuration.mybatisPlusEnable>
-import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 <#elseif Configuration.jpaEnable>
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 </#if>
+<#if Configuration.lombokEnable>
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+</#if>
+
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  * ${Remarks}
@@ -36,4 +34,9 @@ import java.util.List;
 </#if>
 public class ${ClassName}SearchDTO implements Serializable {
 
+    @ApiModelProperty(value = "筛选日期")
+    private SearchDTO.RangeDTO.Calendar.DateTime dateTimeRange;
+
+    @ApiModelProperty(required = false, value = "是否查询扩展参数（默认不查询）", notes = "")
+    private Boolean searchExtend = false;
 }

@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 </#if>
 <#if Configuration.mybatisPlusEnable>
-import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 <#elseif Configuration.jpaEnable>
@@ -15,8 +14,6 @@ import org.hibernate.annotations.GenericGenerator;
 </#if>
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  * ${Remarks}
