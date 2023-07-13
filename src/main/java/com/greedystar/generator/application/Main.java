@@ -23,7 +23,8 @@ public class Main {
     public static void single() {
         Map<String, String> invokerMap = new HashMap<>();
 
-        invokerMap.put("classroom_summary", "ClassroomSummary");
+//        invokerMap.put("holidays_designated_account", "HolidaysDesignatedAccount");
+        invokerMap.put("assessment_category", "AssessmentCategory");
 
 
         invokerMap.forEach(new BiConsumer<String, String>() {

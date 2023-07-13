@@ -1,22 +1,34 @@
 # 项目包名
+#package-name: com.rzhkj.template.user
 #package-name: com.tsw2.cloudnest.nodes_currency
-package-name: com.ponddy.classroom
+package-name: com.ponddy.assessment
 #package-name: com.rzhkj.nt.site
 # 连接数据库
 db:
+#  schema: education
+#  url: jdbc:mysql://39.100.229.133:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#  username: education
+#  password: 'V:b_m)[1SKVOAw0jr~?_1W.T^OM;Iy3|'
+# 暖通
 #  schema: nt
-#  url: jdbc:mysql://192.168.10.220:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#  url: jdbc:mysql://192.168.31.220:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
 #  username: root
 #  password: mysqladmin
+# 云巢
 #  schema: cloudnest
 #  url: jdbc:mysql://159.138.1.147:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
 #  username: cloudnest
 #  password: cloudnest
-  schema: ponddytutors-2.0
+# 庞帝
+#  schema: ponddytutors_v2
 #  schema: im
-  url: jdbc:mysql://192.168.1.250:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-  username: root
-  password: mysqladmin
+#  url: jdbc:mysql://192.168.1.250:3306/${db.schema}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#  username: root
+#  password: mysqladmin
+  schema: ponddytutors_v2
+  url: jdbc:mysql://47.91.213.238:6033/ponddytutors_v2?useUnicode=true&characterEncoding=utf-8&characterSetResults=utf8&zeroDateTimeBehavior=exception&allowMultiQueries=true&serverTimezone=UTC
+  username: ponddy
+  password: m4LwBcQXB4s#1KJOgFZZo&mrzkuQ!2&%
 # 生成文件对应路径
 path:
   controller: ctrl
