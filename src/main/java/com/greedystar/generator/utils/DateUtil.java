@@ -14,15 +14,26 @@ public class DateUtil {
 
     public static void main(String[] args) {
         List<LocalDate> list = new ArrayList<>();
-        list.add(LocalDate.of(2023, 1, 1));
-        list.add(LocalDate.of(2023, 1, 5));
+//        list.add(LocalDate.of(2023, 9, 28));
+        list.add(LocalDate.of(2022, 12, 31));
+//        list.add(LocalDate.of(2023, 1, 1));
+//        list.add(LocalDate.of(2023, 1, 5));
 
         for (LocalDate localDate : list) {
-            LocalDateDTO date = getLocalDate(localDate);
-            LocalDate weekBeginDate = getWeekBeginDateWithYearAndWeek(date.getYearAndWeek());
+            LocalDateDTO date = getLocalDate(localDate, DayOfWeek.MONDAY);
+            LocalDate weekBeginDate = getWeekBeginDateWithYearAndWeek(date.getYearAndWeek(), DayOfWeek.MONDAY);
+            getLocalDate(weekBeginDate, DayOfWeek.MONDAY);
             System.out.printf("=>=>=>=>=>=> date.getYearAndWeek(): %s, weekBeginDate: %s\n", date.getYearAndWeek(), weekBeginDate);
         }
 
+        // 获取当前日期
+        LocalDate currentDate = LocalDate.now();
+
+        // 获取当前日期所在年的第几周
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int weekNumber = currentDate.get(weekFields.weekOfWeekBasedYear());
+
+        System.out.println("当前日期所在年的第几周: " + weekNumber);
     }
 
     /**
@@ -59,7 +70,8 @@ public class DateUtil {
         result.setWeekEndDate(weekResetBeginDate.plusWeeks(1).minusDays(1));
         result.setYearOfWeekBegin(result.getWeekBeginDate().getYear());
         result.setYearOfWeekEnd(result.getWeekEndDate().getYear());
-        result.setWeekOfYear(weekResetBeginDate.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()));
+        WeekFields weekFields = WeekFields.of(dayOfWeek, 7);
+        result.setWeekOfYear(weekResetBeginDate.get(weekFields.weekOfWeekBasedYear()));
 
         result.setMonthBeginDate(LocalDate.of(year, month, 1));
         result.setMonthEndDate(LocalDate.of(year, month, 1).plusMonths(1).minusDays(1));
@@ -88,12 +100,15 @@ public class DateUtil {
         int year = Integer.parseInt(yearAndWeek.toString().substring(0, 4));
         int weekOfYear = Integer.parseInt(yearAndWeek.toString().substring(4, 6));
         System.out.printf("=>=>=>=>=>=> year: %s, weekOfYear: %s\n", year, weekOfYear);
-        LocalDate initYear = LocalDate.of(year, 1, 1);
+        LocalDate firstDateOfYear = LocalDate.of(year, 1, 1);
         // 获得 1月1日所在周的第1天日期
-        LocalDateDTO localDateDTO = getLocalDate(initYear, dayOfWeek);
-        LocalDate weekBeginDate = localDateDTO.getWeekBeginDate();
-        System.out.printf("=>=>=>=>=>=> weekBeginDate: %s\n", weekBeginDate);
-        LocalDate yearAndWeekBeginDate = weekBeginDate.plusWeeks(weekOfYear - 1);
+        LocalDateDTO localDateOfFirstDateOfYear = getLocalDate(firstDateOfYear, dayOfWeek);
+        LocalDate weekBeginDateOfFirstDateOfYear = localDateOfFirstDateOfYear.getWeekBeginDate();
+        System.out.printf("=>=>=>=>=>=> weekBeginDate: %s\n", weekBeginDateOfFirstDateOfYear);
+        LocalDate yearAndWeekBeginDate = weekBeginDateOfFirstDateOfYear.plusWeeks(weekOfYear - 1);
+        if (weekBeginDateOfFirstDateOfYear.getYear() - year != 0) {
+            yearAndWeekBeginDate = weekBeginDateOfFirstDateOfYear.plusWeeks(weekOfYear);
+        }
         System.out.printf("=>=>=>=>=>=> yearAndWeekBeginDate: %s\n", yearAndWeekBeginDate);
         return yearAndWeekBeginDate;
     }
