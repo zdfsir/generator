@@ -13,16 +13,17 @@ import java.util.Locale;
 public class DateUtil {
 
     public static void main(String[] args) {
+        DayOfWeek dayOfWeek = DayOfWeek.THURSDAY;
         List<LocalDate> list = new ArrayList<>();
-//        list.add(LocalDate.of(2023, 9, 28));
-        list.add(LocalDate.of(2022, 12, 31));
+//        list.add(LocalDate.of(2022, 12, 31));
 //        list.add(LocalDate.of(2023, 1, 1));
 //        list.add(LocalDate.of(2023, 1, 5));
+        list.add(LocalDate.of(2023, 9, 25));
 
         for (LocalDate localDate : list) {
-            LocalDateDTO date = getLocalDate(localDate, DayOfWeek.MONDAY);
-            LocalDate weekBeginDate = getWeekBeginDateWithYearAndWeek(date.getYearAndWeek(), DayOfWeek.MONDAY);
-            getLocalDate(weekBeginDate, DayOfWeek.MONDAY);
+            LocalDateDTO date = getLocalDate(localDate, dayOfWeek);
+            LocalDate weekBeginDate = getWeekBeginDateWithYearAndWeek(date.getYearAndWeek(), dayOfWeek);
+            getLocalDate(weekBeginDate, dayOfWeek);
             System.out.printf("=>=>=>=>=>=> date.getYearAndWeek(): %s, weekBeginDate: %s\n", date.getYearAndWeek(), weekBeginDate);
         }
 
